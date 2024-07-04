@@ -1,11 +1,13 @@
-import java.util.ArrayList;
+package Service;
+
+import java.util.HashMap;
 import java.util.Random;
 
 public class Reader {
 
     private String name;
 
-    ArrayList<Book> booksInUse;
+    HashMap<Integer, Book> booksInUse;
 
     int countOfBooksInUse;
 
@@ -14,7 +16,7 @@ public class Reader {
     public Reader(String name) {
         this.name = name;
         libraryNumber = "";
-        booksInUse = new ArrayList<>();
+        booksInUse = new HashMap<>();
     }
 
     public String getName() {
@@ -25,7 +27,7 @@ public class Reader {
         return libraryNumber;
     }
 
-    public void registerInLibrary(Library library) {
+    void registerInLibrary(Library library) {
         if (libraryNumber == "") {
             Random rand = new Random();
             int number = rand.nextInt(10000);
@@ -43,26 +45,25 @@ public class Reader {
         }
     }
 
-    public int chooseABook(ArrayList<Book> availableBooks) {
-        if (availableBooks.size() == 0) {
-            return -1;
-        }
-        Random rand = new Random();
-        int index = rand.nextInt(availableBooks.size());
-        Book choosenBook = availableBooks.get(index);
-        System.out.println("Читатель " + this.name + " выбрал книгу \"" + choosenBook.getTitle() + "\" автора " + choosenBook.getAuthor());
-        return index;
-    }
-    public void takeABook(Book book) {
-        booksInUse.add(book);
-        countOfBooksInUse = booksInUse.size();
-        System.out.println("Читатель " + this.name + " взял почитать книгу \"" + book.getTitle() + "\" автора " + book.getAuthor() + ". Теперь у него " + countOfBooksInUse + " книг");
-    }
-
-    public void returnABook(Book book) {
-        if (!booksInUse.contains(book)) {
+    void takeABook(HashMap<Integer, Book> availableBooks, int bookId) {
+        if (!availableBooks.containsKey(bookId)) {
             return;
         }
+        Book choosenBook = availableBooks.get(bookId);
+        booksInUse.put(bookId, choosenBook);
+        countOfBooksInUse = booksInUse.size();
+        System.out.println("Читатель " + this.name + " взял почитать книгу \"" + choosenBook.getTitle() + "\" автора " + choosenBook.getAuthor() + ". Теперь у него " + countOfBooksInUse + " книг");
+    }
+
+    void returnTheBook(HashMap<Integer, Book> availableBooks, int bookId) {
+        if (!booksInUse.containsKey(bookId)) {
+            return;
+        }
+        Book returningBook = booksInUse.get(bookId);
+        availableBooks.put(bookId, returningBook);
+        booksInUse.remove(bookId);
+        countOfBooksInUse = booksInUse.size();
+        System.out.println("Читатель " + this.name + " вернул книгу \"" + returningBook.getTitle() + "\" автора " + returningBook.getAuthor() + ". Теперь у него " + countOfBooksInUse + " книг");
     }
 
 
