@@ -27,6 +27,9 @@ public class Library {
         totalBooks.add(book);
         availableBooks.add(book);
     }
+    public void kjverwpa() {
+
+    }
 
 }
 

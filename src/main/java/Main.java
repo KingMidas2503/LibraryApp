@@ -21,6 +21,7 @@ public class Main {
             System.out.println("Блин, возникла ошибка : ");
             e.printStackTrace();
         }
+        System.out.println("vrfedsagqrfsd");
 
 
         /*
