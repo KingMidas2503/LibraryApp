@@ -4,12 +4,13 @@ import java.sql.SQLException;
 import java.util.Random;
 
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+
+        //Просто прикольное приветствие:
         System.out.println("Welcome, king Midas!");
 
+        //Это я подключился к БД:
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/habrdb", "habrpguser", "pgpwd4habr");
@@ -21,10 +22,9 @@ public class Main {
             System.out.println("Блин, возникла ошибка : ");
             e.printStackTrace();
         }
-        System.out.println("vrfedsagqrfsd");
 
 
-        /*
+        //Это пример работы программы:
         Library library = new Library("Библиотека имени Льва Толстого");
         Book godfather = new Book("Крестный отец", "Марио Пьюзо");
         Book ilPrincipe = new Book("Государь", "Никколо Макиавелли");
@@ -39,15 +39,19 @@ public class Main {
         library.addBook(philosophyOfJava);
         library.addBook(atlasShrugged);
 
-        Librarian librarianTaras = new Librarian("Тарас", library);
-        Reader readerVasya = new Reader("Вася");
-        Reader readerPetya = new Reader("Петя");
-        librarianTaras.giveABook(readerVasya);
-        librarianTaras.giveABook(readerVasya);
-        librarianTaras.giveABook(readerVasya);
-        librarianTaras.giveABook(readerPetya);
-        librarianTaras.giveABook(readerPetya);
-        librarianTaras.giveABook(readerPetya);
-        librarianTaras.giveABook(readerPetya);*/
+        Rent rent = new Rent("Вася", "Тарас", library);
+        rent.startARent(0);
+        rent.startARent(1);
+        rent.startARent(2);
+        rent.startARent(3);
+        rent.stopTheRent(2);
+        rent.startARent(4);
+        rent.startARent(7);
+        rent.stopTheRent(3);
+
+        for (int i = 0; i < rent.getRentalCatalog().size(); i++) {
+            System.out.println(rent.getRentalCatalog().get(i));
+        }
+
     }
 }
