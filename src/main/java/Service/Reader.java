@@ -1,23 +1,22 @@
 package Service;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class Reader {
 
     private String name;
-
-    HashMap<Integer, Book> booksInUse;
-
     int countOfBooksInUse;
-
     private String libraryNumber;
+    boolean hasBeenToTheLibrary;
+
 
     public Reader(String name) {
         this.name = name;
         libraryNumber = "";
-        booksInUse = new HashMap<>();
+        hasBeenToTheLibrary = false;
     }
+
+
 
     public String getName() {
         return name;
@@ -45,25 +44,18 @@ public class Reader {
         }
     }
 
-    void takeABook(HashMap<Integer, Book> availableBooks, int bookId) {
-        if (!availableBooks.containsKey(bookId)) {
-            return;
-        }
-        Book choosenBook = availableBooks.get(bookId);
-        booksInUse.put(bookId, choosenBook);
-        countOfBooksInUse = booksInUse.size();
-        System.out.println("Читатель " + this.name + " взял почитать книгу \"" + choosenBook.getTitle() + "\" автора " + choosenBook.getAuthor() + ". Теперь у него " + countOfBooksInUse + " книг");
+    void takeABook(Library library, Book book) {
+        int size = library.workers.size();
+        int randIndex = new Random().nextInt(size);
+        Librarian librarian = library.workers.get(randIndex);
+        librarian.giveABook(this, book);
     }
 
-    void returnTheBook(HashMap<Integer, Book> availableBooks, int bookId) {
-        if (!booksInUse.containsKey(bookId)) {
-            return;
-        }
-        Book returningBook = booksInUse.get(bookId);
-        availableBooks.put(bookId, returningBook);
-        booksInUse.remove(bookId);
-        countOfBooksInUse = booksInUse.size();
-        System.out.println("Читатель " + this.name + " вернул книгу \"" + returningBook.getTitle() + "\" автора " + returningBook.getAuthor() + ". Теперь у него " + countOfBooksInUse + " книг");
+    void returnTheBook(Library library, Book book) {
+        int size = library.workers.size();
+        int randIndex = new Random().nextInt(size);
+        Librarian librarian = library.workers.get(randIndex);
+        librarian.acceptTheBook(this, book);
     }
 
 
