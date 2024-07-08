@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 public class LibraryDAO {
 
@@ -23,11 +22,7 @@ public class LibraryDAO {
         try {
             String sqlString = "CREATE TABLE BOOKS_OF_"
                     + library.getTitle().replaceAll(" ", "_").toUpperCase()
-                    + " ("
-                    + " ID SERIAL PRIMARY KEY, "
-                    + " TITLE VARCHAR(50) NOT NULL,"
-                    + " AUTHOR VARCHAR(30) NOT NULL"
-                    + ")";
+                    + " (ID SERIAL PRIMARY KEY, TITLE VARCHAR(50) NOT NULL, AUTHOR VARCHAR(40) NOT NULL)";
             PreparedStatement ps = libCon.prepareStatement(sqlString);
             ps.execute();
             System.out.println("Создана таблица с книгами библиотеки \"" + library.getTitle() + "\"");
@@ -38,18 +33,16 @@ public class LibraryDAO {
     }
     public void addBookInTable(Library library, Book book, int bookId) {
         try {
-            String title = book.getTitle().replaceAll(" ", "_").toUpperCase();
-            String author = book.getAuthor().replaceAll(" ", "_").toUpperCase();
-            String sqlString = "INSERT INTO BOOKS_OF_"
-                    + library.getTitle().replaceAll(" ", "_").toUpperCase()
-                    +" (ID, TITLE, AUTHOR) VALUES ("
-                    + bookId + ", \'"
-                    + title + "\', \'"
-                    + author
-                    + "\')";
+            String libraryTitle = library.getTitle().replaceAll(" ", "_").toUpperCase();
+            String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
+            String bookAuthor = book.getAuthor().replaceAll(" ", "_").toUpperCase();
+            String sqlString = "INSERT INTO BOOKS_OF_" + libraryTitle + " (ID, TITLE, AUTHOR) VALUES (?, ?, ?)";
             PreparedStatement ps = libCon.prepareStatement(sqlString);
+            ps.setInt(1, bookId);
+            ps.setString(2, bookTitle);
+            ps.setString(3, bookAuthor);
             ps.execute();
-            System.out.println("В таблицу с книгами библиотеки \"" + library.getTitle() + "\"" + " добавлена книга \"" + book.getTitle() + "\"");
+            System.out.println("В таблицу с книгами библиотеки \"" + library.getTitle() + "\"" + " добавлена книга \"" + book.getTitle() + "\", автор " + book.getAuthor());
         } catch (SQLException e) {
             System.out.print("Блин, возникла ошибка: " + e.getMessage());
         }
@@ -59,16 +52,12 @@ public class LibraryDAO {
         HashMap<Integer, Book> selectedBook = new HashMap<>();
         try {
             String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
-            String selectString = "SELECT ID, TITLE, AUTHOR FROM BOOKS_OF_"
+            String sqlString = "SELECT ID, TITLE, AUTHOR FROM BOOKS_OF_"
                     + library.getTitle().replaceAll(" ", "_").toUpperCase()
                     + " WHERE TITLE = " + "\'" + bookTitle + "\'";
-            String deleteString = "DELETE FROM BOOKS_OF_"
-                    + library.getTitle().replaceAll(" ", "_").toUpperCase()
-                    + " WHERE TITLE = " + "\'" + bookTitle + "\'";
-            PreparedStatement select = libCon.prepareStatement(selectString);
+
+            PreparedStatement select = libCon.prepareStatement(sqlString);
             ResultSet rs = select.executeQuery();
-            PreparedStatement delete = libCon.prepareStatement(deleteString);
-            delete.execute();
             while (rs.next()) {
                 int id = rs.getInt("ID");
                 String title = rs.getString("TITLE");

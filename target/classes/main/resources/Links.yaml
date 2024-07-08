@@ -1,0 +1,7 @@
+driver: "org.postgresql.Driver"
+DBMS: "jdbc:postgresql"
+host: "localhost"
+port: "5432"
+user: "habrdb"
+username: "habrpguser"
+password: "pgpwd4habr"

@@ -4,7 +4,7 @@ package Service;
 public class Book {
 
     private String title;
-    private String author;;
+    private String author;
 
     public Book(String title, String author) {
         this.title = title;

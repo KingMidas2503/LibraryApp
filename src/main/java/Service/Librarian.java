@@ -5,7 +5,6 @@ import dao.LibraryDAO;
 import dao.ReaderDAO;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 public class Librarian {
 
@@ -29,9 +28,6 @@ public class Librarian {
     public Library getLibrary() {
         return library;
     }
-    public void setLibrary(Library library) {
-        this.library = library;
-    }
 
     public void giveABook(Reader reader, Book book) {
         if (!reader.hasBeenToTheLibrary) {
@@ -39,14 +35,13 @@ public class Librarian {
             reader.hasBeenToTheLibrary = true;
         }
         reader.registerInLibrary(library);
-        try {
-            HashMap<Integer, Book> selectedBook = libraryDAO.selectBookFromTable(library, book);
-            int id = selectedBook.keySet().iterator().next();
-            Book newBook = selectedBook.get(id);
+
+        HashMap<Integer, Book> selectedBook = libraryDAO.selectBookFromTable(library, book);
+        int id = selectedBook.keySet().iterator().next();
+        Book newBook = selectedBook.get(id);
+        int i = library.rent.start(reader, book, id, this);
+        if (i > 0) {
             readerDAO.addBookInTable(reader, newBook, id);
-            System.out.println("Книга \"" + book.getTitle() + "\" выдана читателю " + reader.getName() + " библиотекарем " + this.getName() + " в библиотеке \"" + library.getTitle() + "\"");
-        } catch (NoSuchElementException e) {
-            System.out.println("В библиотеке \"" + library.getTitle() + "\" сейчас нет книги \"" + book.getTitle() + "\". Читатель " + reader.getName() + " ее получить не может.");
         }
     }
 
@@ -56,14 +51,10 @@ public class Librarian {
             return;
         }
         reader.registerInLibrary(library);
-        try {
-            HashMap<Integer, Book> selectedBook = readerDAO.selectBookFromTable(reader, book);
-            int id = selectedBook.keySet().iterator().next();
-            Book newBook = selectedBook.get(id);
-            libraryDAO.addBookInTable(library, newBook, id);
-            System.out.println("Читатель " + reader.getName() + " вернул книгу \"" + book.getTitle() + "\" в библиотеку \"" + library.getTitle() + "\". Книгу принял библиотекарь " + this.getName());
-        } catch (NoSuchElementException e) {
-            System.out.println("У читателя " + reader.getName() + " сейчас нет книги \"" + book.getTitle() + "\" в пользовании. Так что хрен он ее вернет. Нельзя вернуть то, чего у тебя нет.");
+        int i = library.rent.stop(reader, book, this);
+        if (i > 0) {
+            readerDAO.deleteBookFromTable(reader, book);
+
         }
     }
 

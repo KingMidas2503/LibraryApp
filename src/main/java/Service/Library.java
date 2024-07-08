@@ -11,6 +11,7 @@ public class Library {
 
     private int bookId;
 
+    Rent rent;
 
     ArrayList<Librarian> workers;
 
@@ -23,6 +24,7 @@ public class Library {
         readersRegistry = new HashMap<>();
         LibraryDAO libraryDAO = new LibraryDAO();
         libraryDAO.createBookTable(this);
+        rent = new Rent(this);
     }
 
     public String getTitle() {

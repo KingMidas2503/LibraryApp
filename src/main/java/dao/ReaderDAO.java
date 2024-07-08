@@ -5,10 +5,7 @@ import Service.Reader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 public class ReaderDAO {
 
@@ -22,11 +19,7 @@ public class ReaderDAO {
         try {
             String sqlString = "CREATE TABLE BOOKS_IN_USE_OF_"
                     + reader.getName().replaceAll(" ", "_").toUpperCase()
-                    + " ("
-                    + " ID SERIAL PRIMARY KEY, "
-                    + " TITLE VARCHAR(50) NOT NULL,"
-                    + " AUTHOR VARCHAR(30) NOT NULL"
-                    + ")";
+                    + " (ID SERIAL PRIMARY KEY, TITLE VARCHAR(50) NOT NULL, AUTHOR VARCHAR(40) NOT NULL)";
             PreparedStatement ps = readCon.prepareStatement(sqlString);
             ps.execute();
             System.out.println("Создана таблица для книг в пользовании читателя " + reader.getName());
@@ -37,47 +30,32 @@ public class ReaderDAO {
     }
     public void addBookInTable(Reader reader, Book book, int bookId) {
         try {
-            String title = book.getTitle().replaceAll(" ", "_").toUpperCase();
-            String author = book.getAuthor().replaceAll(" ", "_").toUpperCase();
-            String sqlString = "INSERT INTO BOOKS_IN_USE_OF_"
-                    + reader.getName().replaceAll(" ", "_").toUpperCase()
-                    +" (ID, TITLE, AUTHOR) VALUES ("
-                    + bookId + ", \'"
-                    + title + "\', \'"
-                    + author
-                    + "\')";
+            String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
+            String bookAuthor = book.getAuthor().replaceAll(" ", "_").toUpperCase();
+            String readerName = reader.getName().replaceAll(" ", "_").toUpperCase();
+            String sqlString = "INSERT INTO BOOKS_IN_USE_OF_" + readerName + " (ID, TITLE, AUTHOR) VALUES (?, ?, ?)";
             PreparedStatement ps = readCon.prepareStatement(sqlString);
+            ps.setInt(1, bookId);
+            ps.setString(2, bookTitle);
+            ps.setString(3, bookAuthor);
             ps.execute();
         } catch (SQLException e) {
             System.out.print("Блин, возникла ошибка: " + e.getMessage());
         }
     }
 
-    public HashMap<Integer, Book> selectBookFromTable(Reader reader, Book book) {
-        HashMap<Integer, Book> selectedBooks = new HashMap<>();
+    public void deleteBookFromTable(Reader reader, Book book) {
         String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
         try {
-            String selectString = "SELECT ID, TITLE, AUTHOR FROM BOOKS_IN_USE_OF_"
+            String sqlString = "DELETE FROM BOOKS_IN_USE_OF_"
                     + reader.getName().replaceAll(" ", "_").toUpperCase()
                     + " WHERE TITLE = " + "\'" + bookTitle + "\'";
-            String deleteString = "DELETE FROM BOOKS_IN_USE_OF_"
-                    + reader.getName().replaceAll(" ", "_").toUpperCase()
-                    + " WHERE TITLE = " + "\'" + bookTitle + "\'";
-            PreparedStatement select = readCon.prepareStatement(selectString);
-            ResultSet rs = select.executeQuery();
-            PreparedStatement delete = readCon.prepareStatement(deleteString);
+            PreparedStatement delete = readCon.prepareStatement(sqlString);
             delete.execute();
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String title = rs.getString("TITLE");
-                String author = rs.getString("AUTHOR");
-                selectedBooks.put(id, new Book(title, author));
-            }
         } catch (SQLException e) {
             System.out.println("Блин, возникла ошибка: " + e.getMessage());
         }
 
-        return selectedBooks;
     }
 
 }

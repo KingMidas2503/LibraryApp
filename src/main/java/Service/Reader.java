@@ -5,7 +5,6 @@ import java.util.Random;
 public class Reader {
 
     private String name;
-    int countOfBooksInUse;
     private String libraryNumber;
     boolean hasBeenToTheLibrary;
 
@@ -40,7 +39,7 @@ public class Reader {
             System.out.println("В библиотеке \"" + library.getTitle() + "\" новый читатель " + this.name + ". Ему присвоен регистрационный номер " + libraryNumber);
         }
         else {
-            System.out.println("В библиотеку \"" + library.getTitle() + "\" снова пришел читаель " + this.name + ", регистрационный номер " + libraryNumber);
+            System.out.println("В библиотеку \"" + library.getTitle() + "\" снова пришел читатель " + this.name + ", регистрационный номер " + libraryNumber);
         }
     }
 
