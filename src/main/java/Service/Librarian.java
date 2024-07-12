@@ -1,15 +1,16 @@
 package Service;
 
-
 import dao.LibraryDAO;
 import dao.ReaderDAO;
-
 import java.util.HashMap;
+import lombok.Getter;
+
 
 public class Librarian {
 
+    @Getter
     private String name;
-
+    @Getter
     private Library library;
 
     ReaderDAO readerDAO = new ReaderDAO();
@@ -20,13 +21,6 @@ public class Librarian {
         this.name = name;
         this.library = library;
         library.workers.add(this);
-    }
-
-    public String getName() {
-        return name;
-    }
-    public Library getLibrary() {
-        return library;
     }
 
     public void giveABook(Reader reader, Book book) {

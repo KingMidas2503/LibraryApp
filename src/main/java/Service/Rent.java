@@ -4,7 +4,6 @@ import dao.RentDAO;
 
 public class Rent {
 
-
     private RentDAO dao = new RentDAO();
 
     public Rent(Library library) {

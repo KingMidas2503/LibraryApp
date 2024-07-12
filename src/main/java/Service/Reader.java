@@ -1,11 +1,14 @@
 package Service;
 
 import java.util.Random;
+import lombok.Getter;
 
 public class Reader {
-
+    @Getter
     private String name;
+    @Getter
     private String libraryNumber;
+
     boolean hasBeenToTheLibrary;
 
 
@@ -13,16 +16,6 @@ public class Reader {
         this.name = name;
         libraryNumber = "";
         hasBeenToTheLibrary = false;
-    }
-
-
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLibraryNumber() {
-        return libraryNumber;
     }
 
     void registerInLibrary(Library library) {

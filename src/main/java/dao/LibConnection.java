@@ -1,7 +1,6 @@
 package dao;
 
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,8 +50,5 @@ public class LibConnection {
         }
         return instance.libConnection;
     }
-
-
-
 
 }

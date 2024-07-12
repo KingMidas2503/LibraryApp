@@ -1,8 +1,12 @@
 package Service;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public class Book {
-
+    @Setter
+    private int id;
     private String title;
     private String author;
 
@@ -10,13 +14,5 @@ public class Book {
         this.title = title;
         this.author = author;
     }
-
-    public String getTitle() {
-        return title;
-    }
-    public String getAuthor() {
-        return author;
-    }
-
 
 }

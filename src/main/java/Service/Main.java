@@ -1,5 +1,8 @@
 package Service;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,11 +10,6 @@ public class Main {
         //Просто прикольное приветствие:
         System.out.println("Welcome, king Midas!");
 
-
-
-        //Проработал функциональность: теперь читатель обращается в библиотеку
-        // и взаимодействует с ней через библиотекаря. Библиотекарь выдает и принимает книги,
-        // используя DAO-классы ReaderDAO и LibraryDAO
         Library library = new Library("The most based library");
 
         Book godfather = new Book("Крестный отец", "Марио Пьюзо");

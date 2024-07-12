@@ -1,40 +1,37 @@
 package Service;
 
 import dao.LibraryDAO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Getter;
 
 public class Library {
 
+    @Getter
     private String title;
 
     private int bookId;
 
     Rent rent;
 
-    ArrayList<Librarian> workers;
+    List<Librarian> workers = new ArrayList<>();;
 
-    HashMap<String, Reader> readersRegistry;
+    Map<String, Reader> readersRegistry = new HashMap<>();;
 
 
     public Library(String title) {
         this.title = title;
-        workers = new ArrayList<>();
-        readersRegistry = new HashMap<>();
         LibraryDAO libraryDAO = new LibraryDAO();
         libraryDAO.createBookTable(this);
         rent = new Rent(this);
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-
     public void addBook(Book book) {
         bookId++;
         LibraryDAO libraryDAO = new LibraryDAO();
+        book.setId(bookId);
         libraryDAO.addBookInTable(this, book, bookId);
     }
 }
