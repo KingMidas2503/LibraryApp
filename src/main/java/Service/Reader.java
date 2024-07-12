@@ -36,14 +36,14 @@ public class Reader {
         }
     }
 
-    void takeABook(Library library, Book book) {
+    public void takeABook(Library library, Book book) {
         int size = library.workers.size();
         int randIndex = new Random().nextInt(size);
         Librarian librarian = library.workers.get(randIndex);
         librarian.giveABook(this, book);
     }
 
-    void returnTheBook(Library library, Book book) {
+    public void returnTheBook(Library library, Book book) {
         int size = library.workers.size();
         int randIndex = new Random().nextInt(size);
         Librarian librarian = library.workers.get(randIndex);
