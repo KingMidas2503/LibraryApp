@@ -3,8 +3,6 @@ package dao;
 import Service.Book;
 import Service.Reader;
 import org.springframework.jdbc.core.JdbcTemplate;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class ReaderDAO {
 
