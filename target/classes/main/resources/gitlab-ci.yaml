@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - 49385
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
