@@ -6,24 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Library {
 
     @Getter
     private String title;
 
     private int bookId;
-
     Rent rent;
-
     List<Librarian> workers = new ArrayList<>();;
-
     Map<String, Reader> readersRegistry = new HashMap<>();;
+    LibraryDAO libraryDAO = new LibraryDAO();
+
 
 
     public Library(String title) {
         this.title = title;
-        LibraryDAO libraryDAO = new LibraryDAO();
         libraryDAO.createBookTable(this);
         rent = new Rent(this);
     }

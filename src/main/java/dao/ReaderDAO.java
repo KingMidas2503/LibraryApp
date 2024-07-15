@@ -3,7 +3,9 @@ package dao;
 import Service.Book;
 import Service.Reader;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ReaderDAO {
 
     private JdbcTemplate jdbcTemplate;

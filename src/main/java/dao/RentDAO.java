@@ -4,10 +4,13 @@ import Service.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Repository;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@Repository
 public class RentDAO {
 
     private JdbcTemplate jdbcTemplate;;
@@ -93,7 +96,7 @@ public class RentDAO {
                 String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
                 String sqlString = "UPDATE " + databaseName + " SET IS_ACTIVE = FALSE WHERE TITLE = \'" + bookTitle + "\'";
                 jdbcTemplate.update(sqlString);
-                statusOfRent.put(book, new Reader("noname"));
+                statusOfRent.put(book, reader);
                 System.out.println("Читатель " + reader.getName() + " вернул книгу \"" + book.getTitle() + "\" в библиотеку \"" + librarian.getLibrary().getTitle() + "\". Книгу принял библиотекарь " + librarian.getName());
                 return 1;
             } catch (Exception e) {

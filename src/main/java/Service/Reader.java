@@ -2,7 +2,9 @@ package Service;
 
 import java.util.Random;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Reader {
     @Getter
     private String name;
@@ -17,7 +19,7 @@ public class Reader {
         libraryNumber = "";
         hasBeenToTheLibrary = false;
     }
-
+    
     void registerInLibrary(Library library) {
         if (libraryNumber == "") {
             Random rand = new Random();
