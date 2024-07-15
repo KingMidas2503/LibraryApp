@@ -1,0 +1,15 @@
+stages:
+  - build
+  - test
+  - delivery
+  - deploy
+
+build:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      -java/
+    expire_in: 30 days
