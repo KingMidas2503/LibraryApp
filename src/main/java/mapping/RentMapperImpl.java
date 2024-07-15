@@ -7,7 +7,7 @@ import dao.RentDAO;
 public class RentMapperImpl implements RentMapper {
 
     @Override
-    public RentDAO toRentDAO(Rent rent) {
+    public RentDAO toDAO(Rent rent) {
         if ( rent == null ) {
             return null;
         }

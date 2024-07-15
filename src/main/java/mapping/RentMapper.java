@@ -11,7 +11,7 @@ public interface RentMapper {
 
     RentMapper INSTANCE = Mappers.getMapper(RentMapper.class);
 
-    RentDAO toRentDAO(Rent rent);
+    RentDAO toDAO(Rent rent);
     Rent fromDAO(RentDAO rentDao);
 
 }

@@ -13,17 +13,15 @@ public class Library {
     private String title;
 
     private int bookId;
-
     Rent rent;
-
     List<Librarian> workers = new ArrayList<>();;
-
     Map<String, Reader> readersRegistry = new HashMap<>();;
+    LibraryDAO libraryDAO = new LibraryDAO();
+
 
 
     public Library(String title) {
         this.title = title;
-        LibraryDAO libraryDAO = new LibraryDAO();
         libraryDAO.createBookTable(this);
         rent = new Rent(this);
     }
