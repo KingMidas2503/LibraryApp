@@ -4,7 +4,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Просто прикольное приветствие:
         System.out.println("Welcome, king Midas!");
 
         Library library = new Library("The most based library");

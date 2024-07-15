@@ -30,6 +30,4 @@ public class LibraryProjectController {
         reader.returnTheBook(library, book);
     }
 
-
-
 }
