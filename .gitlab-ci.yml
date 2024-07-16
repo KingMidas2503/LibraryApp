@@ -6,6 +6,7 @@ build:
   image: maven:latest
   script:
     - mvn clean install
+    - mvn test
   artifacts:
     paths:
       - target/
