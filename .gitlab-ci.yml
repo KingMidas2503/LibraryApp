@@ -7,14 +7,6 @@ build:
   script:
     - mvn clean install
     - mvn test
-
-publish:
-  stage: publish
-  image: maven:latest
-  script:
-    - mvn deploy
-  when: manual
-
 artifacts:
   paths:
     - target/
