@@ -11,5 +11,5 @@ build:
     - npm run build
   artifacts:
     paths:
-      -java/
+      -dist/
     expire_in: 30 days
