@@ -1,0 +1,15 @@
+stages:
+  - build
+  - test
+  - delivery
+  - deploy
+
+build:
+  stage: build
+  script:
+    - mvn build
+    - mvn test
+  artifacts:
+    paths:
+      - target/
+    expire_in: 30 days

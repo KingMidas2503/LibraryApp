@@ -7,9 +7,9 @@ stages:
 build:
   stage: build
   script:
-    - npm install
-    - npm run build
+    - mvn build
+    - mvn test
   artifacts:
     paths:
-      - build/
+      - target/
     expire_in: 30 days
