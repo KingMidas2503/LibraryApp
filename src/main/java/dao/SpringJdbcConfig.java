@@ -15,7 +15,7 @@ public class SpringJdbcConfig {
 
     SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
     Yaml yaml = new Yaml();
-    private InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("yml-files/Links.yaml");
+    private InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/Links.yaml");
     private Map<String, Object> sqlObject = yaml.load(inputStream);
 
     private String driver = sqlObject.get("driver").toString();

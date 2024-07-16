@@ -2,9 +2,8 @@ package Service;
 
 import java.util.Random;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
 
-@Service
+
 public class Reader {
     @Getter
     private String name;
