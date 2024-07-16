@@ -1,15 +1,9 @@
 stages:
   - build
-  - test
-  - delivery
-  - deploy
 
-build:
+java-build:
+  # select the most appropriate image for your project
+  image: maven:3.8-openjdk-11
   stage: build
   script:
-    - mvn build
-    - mvn test
-  artifacts:
-    paths:
-      - target/
-    expire_in: 30 days
+    - mvn package -DskipTests=true
