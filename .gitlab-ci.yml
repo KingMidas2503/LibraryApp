@@ -3,7 +3,7 @@ stages:
 
 build:
   stage: build
-  image: maven:3.8.1
+  image: maven:latest
   script:
     - mvn clean install
     - mvn test
@@ -12,7 +12,7 @@ build:
       - target/
 publish:
   stage: publish
-  image: maven:3.8.1
+  image: maven:latest
   script:
     - mvn deploy
   when: manual
