@@ -3,10 +3,17 @@ stages:
 
 build:
   stage: build
-  image: maven:latest
+  image: maven:3.8.1
   script:
     - mvn clean install
     - mvn test
   artifacts:
     paths:
       - target/
+publish:
+  stage: publish
+  image: maven:3.8.1
+  script:
+    - mvn deploy
+  when: manual
+
