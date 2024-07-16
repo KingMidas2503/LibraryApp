@@ -13,3 +13,11 @@ build:
     paths:
       -dist/
     expire_in: 30 days
+    reports:
+    access: none
+    name:
+    expose_as:
+    untracked: false
+    exclude:
+      -
+    when: on_success
