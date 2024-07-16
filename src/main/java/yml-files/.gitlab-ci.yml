@@ -3,16 +3,9 @@ stages:
 
 build:
   stage: build
-  # Cache downloaded dependencies and plugins between builds.
-  # The key here separates one cache per branch/tag ($CI_COMMIT_REF_SLUG)
-  cache:
-    key: "maven-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .m2/repository
+  image: maven:latest
   script:
-    - mvn build
-    - mvn test
+    - mvn clean install
   artifacts:
     paths:
       - target/
-    expire_in: 30 days
