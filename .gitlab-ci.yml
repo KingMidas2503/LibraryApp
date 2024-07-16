@@ -7,7 +7,6 @@ build:
   script:
     - mvn clean install
     - mvn test
-artifacts:
-  paths:
-    - target/
-
+  artifacts:
+    paths:
+      - target/
