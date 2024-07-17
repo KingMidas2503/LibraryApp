@@ -16,12 +16,12 @@ publish:
   services:
     - docker:dind
   script:
-    - docker build -t Intabia-Internship-1.0-SNAPSHOT.jar  .
+    - docker build -t Intabia-Internship-1.0-SNAPSHOT  .
     - docker login -u m.kuzmin -p PrewarGlassOfWhiskey2024 https://registry.intabia.ru/harbor/projects/62/repositories
-    - docker tag Intabia-Internship-1.0-SNAPSHOT.jar  https://registry.intabia.ru/harbor/projects/62/repositories/Intabia-Internship-1.0-SNAPSHOT.jar
-    - docker push https://registry.intabia.ru/harbor/projects/62/repositories/Intabia-Internship-1.0-SNAPSHOT.jar
+    - docker tag Intabia-Internship-1.0-SNAPSHOT  https://registry.intabia.ru/harbor/projects/62/repositories/Intabia-Internship-1.0-SNAPSHOT.jar
+    - docker push https://registry.intabia.ru/harbor/projects/62/repositories/Intabia-Internship-1.0-SNAPSHOT
     - docker-compose up -d
   artifacts:
     paths:
-    - Intabia-Internship-1.0-SNAPSHOT.jar
+    - Intabia-Internship-1.0-SNAPSHOT
 
