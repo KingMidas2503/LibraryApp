@@ -1,5 +1,6 @@
 stages:
   - build
+  - publish
 
 build:
   stage: build
@@ -11,13 +12,13 @@ build:
     paths:
       - target/
 publish:
-  stage: build
+  stage: publish
   image: docker:stable
   services:
     - docker:dind
   script:
-    - docker build -t library-spring-app
-    - docker login -u m.kuzmin -p PrewarGlassOfWhiskey2024 https://registry.intabia.ru/harbor/projects/62/repositories
+    - docker build -t library-spring-app .
+    - docker login -u docker-ci  -p qaswedfR3  https://registry.intabia.ru/harbor/projects/62/repositories
     - docker tag library-spring-app https://registry.intabia.ru/harbor/projects/62/repositories/library-spring-app
     - docker push https://registry.intabia.ru/harbor/projects/62/repositories/library-spring-app
 
