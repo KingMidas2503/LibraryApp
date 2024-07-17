@@ -17,10 +17,11 @@ publish:
   services:
     - docker:dind
   script:
-    - docker build -t library-spring-app .
+    - docker build -t internship-library-project .
     - docker login -u docker-ci  -p qaswedfR3 registry.intabia.ru
-    - docker tag library-spring-app registry.intabia.ru/library-spring-app
-    - docker push registry.intabia.ru/library-spring-app
+    - docker tag internship-library-project registry.intabia.ru/internship-library-project
+    - docker push registry.intabia.ru/internship-library-project
+
 
 
 
