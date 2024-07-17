@@ -1,8 +1,5 @@
 # Use the official OpenJDK 11 image as base image
 FROM openjdk:11
-# Set the working directory in the container
 WORKDIR / .
-# Copy all JAR files from the current directory to the container
-COPY /*.jar /
-# Specify the default command to run when the container starts
+ADD /*.jar/https://registry.intabia.ru/harbor/projects/62/repositories /
 CMD ["java", "-jar"]
