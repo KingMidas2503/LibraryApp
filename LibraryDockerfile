@@ -3,6 +3,6 @@ FROM openjdk:11
 # Set the working directory in the container
 WORKDIR /app
 # Copy all JAR files from the current directory to the container
-COPY *.jar /
+ADD /*.jar /
 # Specify the default command to run when the container starts
 CMD ["java", "-jar", "C:\Users\a.kaigorodov\IdeaProjects\Intabia Internship\target\Intabia-Internship-1.0-SNAPSHOT.jar"]
