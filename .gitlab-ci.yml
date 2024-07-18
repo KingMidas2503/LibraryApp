@@ -1,6 +1,7 @@
 stages:
   - build
   - publish
+  -
 build:
   stage: build
   image: maven:latest
