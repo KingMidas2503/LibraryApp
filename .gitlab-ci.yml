@@ -19,6 +19,6 @@ publish:
   script:
     - docker build -t internship-library-project:latest .
     - docker login -u docker-ci -p qaswedfR3 registry.intabia.ru
-    - docker tag internship-library-project:latest registry.intabia.ru/internship-library-project/Library:latest
-    - docker push registry.intabia.ru/internship-library-project/Library:latest
+    - docker tag internship-library-project:latest registry.intabia.ru/internship-library-project/library:latest
+    - docker push registry.intabia.ru/internship-library-project/library:latest
 
