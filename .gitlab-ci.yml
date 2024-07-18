@@ -13,7 +13,7 @@ build:
       - target/
 publish:
   stage: publish
-  image: docker:stable
+  image: docker:docker:27.0.3
   services:
     - docker:dind
   script:
