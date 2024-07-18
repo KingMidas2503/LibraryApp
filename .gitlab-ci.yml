@@ -17,7 +17,7 @@ publish:
   services:
     - docker:dind
   script:
-    - docker build -t internship-library-project .
-    - docker tag internship-library-project registry.intabia.ru/internship-library-project
+    - docker build -t internship-library-project:latest .
+    - docker tag internship-library-project:latest registry.intabia.ru/internship-library-project:latest
     - docker login -u docker-ci -p qaswedfR3 registry.intabia.ru
-    - docker push registry.intabia.ru/internship-library-project
+    - docker push registry.intabia.ru/internship-library-project:latest
