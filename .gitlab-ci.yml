@@ -23,6 +23,9 @@ publish:
     - docker push registry.intabia.ru/internship-library-project/library:latest
 deploy:
   stage: deploy
+  before_script:
+    - apt-get update
+    - apt-get install -y sshpass
   script:
     - sshpass -p vCVdRyW9 ssh internship@192.168.1.193  "docker pull internship-library-project/library:latest && docker run -d -p 80:80 internship-library-project/library:latest"
   tags:
