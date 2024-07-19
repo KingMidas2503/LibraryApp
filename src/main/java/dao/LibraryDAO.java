@@ -15,13 +15,18 @@ import java.util.List;
 @Repository
 public class LibraryDAO {
 
-    private SessionFactory sessionFactory;
+    /*private SessionFactory sessionFactory;
 
     public LibraryDAO() {
         sessionFactory = LibrarySessionFactory.getSessionFactory();
+    }*/
+    private JdbcTemplate jdbcTemplate;
+
+    public LibraryDAO() {
+        jdbcTemplate = SpringJdbcConfig.getJdbcTemplate();
     }
 
-/*
+
     public void createBookTable(Library library) {
         String title = library.getTitle().replaceAll(" ", "_").toUpperCase();
         String sqlString = "CREATE TABLE BOOKS_OF_"
@@ -62,7 +67,7 @@ public class LibraryDAO {
         selectedBook.put(result.get(0).getId(), result.get(0));
 
         return selectedBook;
-    }*/
+    }
 
 
 }
