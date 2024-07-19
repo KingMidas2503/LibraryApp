@@ -23,7 +23,10 @@ publish:
     - docker push registry.intabia.ru/internship-library-project/library:latest
 deploy:
   stage: deploy
+  image: docker:27.0.3
   script:
+    - apk update && apk add --no-cache openssh sshpass
     - sshpass -p vCVdRyW9 ssh internship@192.168.1.193  "docker pull internship-library-project/library:latest && docker run -d -p 80:80 internship-library-project/library:latest"
   tags:
     - docker
+    - alpine:latest
