@@ -27,7 +27,7 @@ deploy:
   when: manual
   script:
     - apk update && apk add --no-cache openssh sshpass
-    - sshpass -p "vCVdRyW9" ssh -o StrictHostKeyChecking=no internship@$192.168.1.193"
+    - sshpass -p "vCVdRyW9" ssh -o "StrictHostKeyChecking=no internship@$192.168.1.193"
     - docker stop library  true && docker rmi registry.intabia.ru/internship-library-project/library:latest true &&
     - echo "$HARBOR_PASSWORD" | docker login --username "$HARBOR_USERNAME" --password-stdin registry.intabia.ru &&
     - docker pull registry.intabia.ru/internship-library-project/library:latest &&
