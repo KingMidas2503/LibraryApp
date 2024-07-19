@@ -24,6 +24,6 @@ publish:
 deploy:
   stage: deploy
   script:
-    - docker login -u $HARBOR_USER -p $HARBOR_PASSWORD registry.intabia.ru
-    - docker pull internship-library-project:latest
-    - ./run_tests.sh internship vCVdRyW9
+    - sshpass -p vCVdRyW9 ssh internship@192.168.1.193  "docker pull internship-library-project/library:latest && docker run -d -p 80:80 internship-library-project/library:latest"
+  tags:
+    - docker

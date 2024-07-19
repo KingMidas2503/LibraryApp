@@ -2,6 +2,7 @@ package dao;
 
 import Service.Book;
 import Service.Library;
+import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,13 +15,13 @@ import java.util.List;
 @Repository
 public class LibraryDAO {
 
-    private JdbcTemplate jdbcTemplate;;
+    private SessionFactory sessionFactory;
 
     public LibraryDAO() {
-        jdbcTemplate = SpringJdbcConfig.getJdbcTemplate();
+        sessionFactory = LibrarySessionFactory.getSessionFactory();
     }
 
-
+/*
     public void createBookTable(Library library) {
         String title = library.getTitle().replaceAll(" ", "_").toUpperCase();
         String sqlString = "CREATE TABLE BOOKS_OF_"
@@ -29,6 +30,8 @@ public class LibraryDAO {
         jdbcTemplate.execute(sqlString);
         System.out.println("Создана таблица с книгами библиотеки \"" + library.getTitle() + "\"");
     }
+
+
 
     public void addBookInTable(Library library, Book book, int bookId) {
         String libraryTitle = library.getTitle().replaceAll(" ", "_").toUpperCase();
@@ -59,7 +62,7 @@ public class LibraryDAO {
         selectedBook.put(result.get(0).getId(), result.get(0));
 
         return selectedBook;
-    }
+    }*/
 
 
 }
