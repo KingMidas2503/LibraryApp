@@ -28,7 +28,6 @@ public class Library {
 
     public void addBook(Book book) {
         bookId++;
-        LibraryDAO libraryDAO = new LibraryDAO();
         book.setId(bookId);
         libraryDAO.addBookInTable(this, book, bookId);
     }

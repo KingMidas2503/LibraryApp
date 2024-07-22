@@ -14,7 +14,6 @@ public class Librarian {
 
     ReaderDAO readerDAO = new ReaderDAO();
 
-    LibraryDAO libraryDAO = new LibraryDAO();
 
     public Librarian(String name, Library library) {
         this.name = name;
@@ -29,7 +28,7 @@ public class Librarian {
         }
         reader.registerInLibrary(library);
 
-        HashMap<Integer, Book> selectedBook = libraryDAO.selectBookFromTable(library, book);
+        HashMap<Integer, Book> selectedBook = library.libraryDAO.selectBookFromTable(library, book);
         int id = selectedBook.keySet().iterator().next();
         Book newBook = selectedBook.get(id);
         int i = library.rent.start(reader, book, id, this);
