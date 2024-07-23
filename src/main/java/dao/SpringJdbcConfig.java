@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class SpringJdbcConfig {
 
-    private JdbcTemplate jdbcTemplate;
+    /*private JdbcTemplate jdbcTemplate;
 
     private static SpringJdbcConfig instance;
 
@@ -49,5 +49,5 @@ public class SpringJdbcConfig {
         }
 
         return instance.jdbcTemplate;
-    }
+    }*/
 }

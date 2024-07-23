@@ -1,7 +1,7 @@
 package config;
 
-import Service.Library;
-import Service.Reader;
+import models.Library;
+import models.Reader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

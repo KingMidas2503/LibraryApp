@@ -1,4 +1,4 @@
-package Service;
+package models;
 
 public class Main {
 
@@ -14,12 +14,12 @@ public class Main {
         Book designPatterns = new Book("Паттерны проектирования", "Эрих Гамма");
         Book philosophyOfJava = new Book("Философия Java", "Брюс Эккель");
         Book atlasShrugged = new Book("Атлант расправил плечи", "Айн Рэнд");
-        library.addBook(godfather);
-        library.addBook(ilPrincipe);
-        library.addBook(customersForLife);
-        library.addBook(designPatterns);
-        library.addBook(philosophyOfJava);
-        library.addBook(atlasShrugged);
+        library.addBookInLibrary(godfather);
+        library.addBookInLibrary(ilPrincipe);
+        library.addBookInLibrary(customersForLife);
+        library.addBookInLibrary(designPatterns);
+        library.addBookInLibrary(philosophyOfJava);
+        library.addBookInLibrary(atlasShrugged);
 
 
         Reader ivan = new Reader("Иван IV");

@@ -121,11 +121,15 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>10.15.2</version>
                 <configuration>
-                    <user>databaseUser</user>
-                    <password>databasePassword</password>
+                    <url>jdbc:postgresql://localhost:5432/habrdb</url>
+                    <user>habrpguser</user>
+                    <password>pgpwd4habr</password>
                     <schemas>
                         <schema>schemaName</schema>
                     </schemas>
+                    <locations>
+                        <location>src/main/resources/v1_init_db.sql</location>
+                    </locations>
                 </configuration>
             </plugin>
         </plugins>

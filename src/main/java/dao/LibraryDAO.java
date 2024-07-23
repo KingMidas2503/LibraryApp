@@ -1,73 +1,107 @@
 package dao;
 
-import Service.Book;
-import Service.Library;
-import org.hibernate.SessionFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import models.Book;
+import models.Library;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
 
 @Repository
 public class LibraryDAO {
 
-    /*private SessionFactory sessionFactory;
+    private Session librarySession;
+
 
     public LibraryDAO() {
-        sessionFactory = LibrarySessionFactory.getSessionFactory();
-    }*/
-    private JdbcTemplate jdbcTemplate;
-
-    public LibraryDAO() {
-        jdbcTemplate = SpringJdbcConfig.getJdbcTemplate();
+        librarySession = LibrarySessionFactory.getSessionFactory().openSession();
     }
-
 
     public void createBookTable(Library library) {
         String title = library.getTitle().replaceAll(" ", "_").toUpperCase();
+        String checkSqlString = "DROP TABLE IF EXISTS BOOKS_OF_" + title;
         String sqlString = "CREATE TABLE BOOKS_OF_"
                 + title + " (ID SERIAL PRIMARY KEY, TITLE VARCHAR(50) NOT NULL, AUTHOR VARCHAR(40) NOT NULL)";
-        jdbcTemplate.execute("DROP TABLE IF EXISTS BOOKS_OF_" + title);
-        jdbcTemplate.execute(sqlString);
+        librarySession.createQuery(checkSqlString).executeUpdate();
+        librarySession.createQuery(sqlString).executeUpdate();
         System.out.println("Создана таблица с книгами библиотеки \"" + library.getTitle() + "\"");
     }
 
 
 
-    public void addBookInTable(Library library, Book book, int bookId) {
-        String libraryTitle = library.getTitle().replaceAll(" ", "_").toUpperCase();
-        String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
-        String bookAuthor = book.getAuthor().replaceAll(" ", "_").toUpperCase();
-        String sqlString = "INSERT INTO BOOKS_OF_" + libraryTitle + " (ID, TITLE, AUTHOR) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sqlString, bookId, bookTitle, bookAuthor);
-        System.out.println("В таблицу с книгами библиотеки \"" + library.getTitle() + "\"" + " добавлена книга \"" + book.getTitle() + "\", автор " + book.getAuthor());
-    }
-
-    public HashMap<Integer, Book> selectBookFromTable(Library library, Book book) {
-        HashMap<Integer, Book> selectedBook = new HashMap<>();
-
-        String bookTitle = book.getTitle().replaceAll(" ", "_").toUpperCase();
-        String sqlString = "SELECT ID, TITLE, AUTHOR FROM BOOKS_OF_"
-                + library.getTitle().replaceAll(" ", "_").toUpperCase()
-                + " WHERE TITLE = ?";
-
-        List<Book> result = jdbcTemplate.query(sqlString, new Object[]{bookTitle}, new RowMapper<Book>() {
-            @Override
-            public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-                int bookId = rs.getInt("ID");
-                Book book = new Book(rs.getString("TITLE"), rs.getString("AUTHOR"));
-                book.setId(bookId);
-                return book;
+    public void addBookInLibrary(Library library, Book book) {
+        Transaction transaction = null;
+        try {
+            book.setLibrary(library);
+            book.setLibraryId(library.getId());
+            book.setUsingNow(false);
+            transaction = librarySession.beginTransaction();
+            librarySession.save(book);
+            librarySession.save(library);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
             }
-        });
-        selectedBook.put(result.get(0).getId(), result.get(0));
-
-        return selectedBook;
+        }
     }
 
+    public int takeBookFromLibrary(Library library, Book book) {
+        Transaction transaction = null;
+        try {
+            transaction = librarySession.beginTransaction();
+            Book selectedBook = librarySession.get(Book.class, book.getId());
+            if (selectedBook != null && selectedBook.getLibrary().getId() == library.getId()) {
+                if (!selectedBook.isUsingNow()) {
+                    selectedBook.setUsingNow(true);
+                    transaction.commit();
+                    return 1;
+                }
+                else {
+                    System.out.println("Сейчас в библиотеке " + library.getTitle() + " нет книги \"" + book.getTitle() + "\". Подождите, когда ее вернут.");
+                    return 0;
+                }
+            }
+            else {
+                System.out.println("В библиотеке " + library.getTitle() + " нет книги \"" + book.getTitle() + "\". Поэтому взять ее не получится." );
+                return 0;
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+            return 0;
+        }
+    }
+    public int returnBookToLibrary(Library library, Book book) {
+        Transaction transaction = null;
+        try {
+            transaction = librarySession.beginTransaction();
+            Book selectedBook = librarySession.get(Book.class, book.getId());
+            if (selectedBook != null && selectedBook.getLibrary().getId() == library.getId()) {
+                if (selectedBook.isUsingNow()) {
+                    selectedBook.setUsingNow(false);
+                    transaction.commit();
+                    return 1;
+                }
+                else {
+                    System.out.println("Логическая ошибка: книга \"" + book.getTitle() + "\" уже находится в библиотеке " + library.getTitle() + ". Поэтому ее нельзя вернуть.");
+                    return 0;
+                }
+            }
+            else {
+                System.out.println("Логическая ошибка: книга \"" + book.getTitle() + "\" никогда не находилась в библиотеке " + library.getTitle() + ". Поэтому ее нельзя вернуть.");
+                return 0;
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+            return 0;
+        }
+    }
 
 }
