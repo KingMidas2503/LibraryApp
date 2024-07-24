@@ -12,16 +12,15 @@ import java.io.Reader;
 
 public class LibrarySessionFactory {
 
-    private static LibrarySessionFactory instance;
+    private static LibrarySessionFactory instance = new LibrarySessionFactory();;
 
     private SessionFactory sessionFactory;
 
     private LibrarySessionFactory() {}
 
     public static SessionFactory getSessionFactory() {
-        if (instance == null) {
+        if (instance.sessionFactory == null) {
             try {
-                instance = new LibrarySessionFactory();
                 Configuration configuration = new Configuration();
                 configuration.configure("hibernate.cfg.xml");
                 configuration.addAnnotatedClass(Book.class);

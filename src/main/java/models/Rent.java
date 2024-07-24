@@ -1,11 +1,8 @@
 package models;
 
-import dao.RentDAO;
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Entity
 @Table(name = "rent")
 public class Rent {
@@ -24,22 +21,12 @@ public class Rent {
     @Setter
     private boolean isActive;
 
-    private RentDAO dao = new RentDAO();
-
-    public Rent(Library library, Book book, Reader reader) {
-        this.libraryId = library.getId();
-        this.bookId = book.getId();
-        this.readerId = reader.getId();
-        this.isActive = false;
+    public Rent(long readerId, long bookId, long libraryId) {
+        this.readerId = readerId;
+        this.bookId = bookId;
+        this.libraryId = libraryId;
+        isActive = true;
     }
 
-    public void start() {
-        dao.start(this);
-
-    }
-
-    public void stop() {
-        dao.stop(this);
-    }
 
 }
