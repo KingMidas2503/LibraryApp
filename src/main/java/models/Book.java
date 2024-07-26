@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Entity
 @Table(name = "books")
@@ -17,8 +18,8 @@ public class Book {
     private String title;
     @Column
     private String author;
-    @Column
     @Setter
+    @JoinColumn(name = "library_id")
     private long libraryId;
     @Column
     @Setter
@@ -32,5 +33,7 @@ public class Book {
         this.title = title;
         this.author = author;
     }
+
+    public Book() {}
 
 }

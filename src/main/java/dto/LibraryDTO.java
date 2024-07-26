@@ -1,5 +1,9 @@
 package dto;
 
+import lombok.Getter;
+
+
+@Getter
 public class LibraryDTO {
 
     private long id;

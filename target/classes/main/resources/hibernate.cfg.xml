@@ -8,5 +8,11 @@
         <property name="hibernate.show_sql ">true</property>
         <property name="hbm2ddl.auto">update</property>
 
+        <mapping class="main.java.models.Book"/>
+        <mapping class="main.java.models.Librarin"/>
+        <mapping class="main.java.models.Library"/>
+        <mapping class="main.java.models.Reader"/>
+        <mapping class="main.java.models.Rent"/>
+        <mapping class="main.java.models.Librarian"/>
     </session-factory>
 </hibernate-configuration>

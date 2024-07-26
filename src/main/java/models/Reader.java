@@ -1,11 +1,12 @@
 package models;
 
-import java.util.Random;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 
+@Getter
 @Entity
-@Table(name = "readers")
+@Table(name = "reader")
 public class Reader {
 
     @Id
@@ -15,10 +16,14 @@ public class Reader {
 
     @Column
     private String name;
-
+    @Column
+    boolean hasBeenToTheLibrary;
 
     public Reader(String name) {
         this.name = name;
+        hasBeenToTheLibrary = false;
     }
+
+    public Reader() {}
 
 }

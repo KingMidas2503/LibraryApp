@@ -1,15 +1,18 @@
 package models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
+
+@Getter
 @Entity
 @Table(name = "rent")
 public class Rent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private long id;
     @Column
     private long readerId;
@@ -27,6 +30,8 @@ public class Rent {
         this.libraryId = libraryId;
         isActive = true;
     }
+
+    public Rent() {}
 
 
 }

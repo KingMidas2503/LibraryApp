@@ -1,17 +1,17 @@
 package dao;
 
+import dto.LibraryDTO;
 import models.Book;
 import models.Library;
+import models.Reader;
 import models.Rent;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-import service.BookService;
-import service.LibraryService;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Repository
 public class LibraryDAO {
@@ -21,6 +21,20 @@ public class LibraryDAO {
 
     public LibraryDAO() {
         librarySession = LibrarySessionFactory.getSessionFactory().openSession();
+    }
+
+    public void saveNewLibrary(Library library) {
+        Transaction transaction = null;
+        try {
+            transaction = librarySession.beginTransaction();
+            librarySession.save(library);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+        }
     }
 
     public void saveNewBook(Book book, long libraryId) {
@@ -39,16 +53,26 @@ public class LibraryDAO {
     }
 
     public Book giveABook(long libraryId, long bookId, long readerId) {
-        Transaction transaction = null;
+        Transaction transaction = librarySession.getTransaction();
         try {
-            transaction = librarySession.beginTransaction();
+            transaction.begin();
             Library library = librarySession.get(Library.class, libraryId);
             Book book = librarySession.get(Book.class, bookId);
-            if (book != null && book.getLibraryId() == libraryId && !book.isUsingNow()) {
-                transaction.commit();
-                Rent rent = new Rent(readerId, bookId, libraryId);
-                rentDAO.startRent(rent);
-                return book;
+            librarySession.refresh(book);
+            if (book != null && book.getLibraryId() == libraryId) {
+                if (!book.isUsingNow()) {
+                    book.setUsingNow(true);
+                    librarySession.update(book);
+                    transaction.commit();
+                    rentDAO.startRent(readerId, bookId, libraryId);
+                    return book;
+
+                }
+                else {
+                    System.out.println("Ошибка: книга \"" + book.getTitle() + "\" находится в аренде. Подождите, пока другой читатель вернет ее в библиотеку.");
+                    transaction.rollback();
+                    return null;
+                }
             }
             else {
                 System.out.println("Ошибка: книга с указанным id не найдена в библиотеке \"" + library.getTitle() + "\"");
@@ -65,16 +89,19 @@ public class LibraryDAO {
         }
     }
     public void acceptTheBook(long libraryId, long bookId, long readerId) {
-        Transaction transaction = null;
+        Transaction transaction = librarySession.getTransaction();
         try {
-            transaction = librarySession.beginTransaction();
+            transaction.begin();
             Library library = librarySession.get(Library.class, libraryId);
             Book book = librarySession.get(Book.class, bookId);
+            librarySession.refresh(book);
             if (book != null && book.getLibraryId() == libraryId) {
                 if (book.isUsingNow()) {
+                    book.setUsingNow(false);
+                    librarySession.update(book);
                     transaction.commit();
-                    Rent rent = new Rent(readerId, bookId, libraryId);
-                    rentDAO.stopRent(rent);
+                    rentDAO.stopRent(readerId, bookId, libraryId);
+                    System.out.println("Книга \"" + book.getTitle() + "\" благополучно возвращена в библиотеку!");
                 }
                 else {
                     System.out.println("Ошибка: у читателя с указанным id нет книги \"" + book.getTitle() + "\" в пользовании. Поэтому он не может ее вернуть");
@@ -92,12 +119,14 @@ public class LibraryDAO {
             }
         }
     }
+
     public Book showABook(long libraryId, long bookId, boolean isLibrarian) {
         Transaction transaction = null;
         try {
             transaction = librarySession.beginTransaction();
             Library library = librarySession.get(Library.class, libraryId);
             Book book = librarySession.get(Book.class, bookId);
+            librarySession.refresh(book);
             if (book != null && book.getLibraryId() == libraryId) {
                 if (!book.isUsingNow() || isLibrarian) {
                     transaction.commit();
@@ -121,28 +150,22 @@ public class LibraryDAO {
             return null;
         }
     }
-/*
+
     public List<Book> showAllBooks(long libraryId, boolean isLibrarian) {
         Transaction transaction = null;
         try {
             transaction = librarySession.beginTransaction();
-            Library library = librarySession.get(Library.class, libraryId);
-            List<Book> books = librarySession.createQuery("from books").list();
-            if (book != null && book.getLibraryId() == libraryId) {
-                if (!book.isUsingNow() || isLibrarian) {
-                    transaction.commit();
-                    return book;
-                } else {
-                    System.out.println("Ошибка: книга \"" + book.getTitle() + "\" находится в аренде. Ее нельзя посмотреть, не имея прав библиотекаря.");
-                    return null;
+            List<Long> ids = librarySession.createQuery("select id from Book").list();
+            List<Book> books = new ArrayList<>();
+            for (int i = 0; i < ids.size(); i++) {
+                long id = ids.get(i);
+                Book book = librarySession.get(Book.class, id);
+                librarySession.refresh(book);
+                if (book.getLibraryId() == libraryId && (!book.isUsingNow() || isLibrarian)) {
+                    books.add(book);
                 }
             }
-            else {
-                System.out.println("Ошибка: книга с указанным id не найдена в библиотеке \"" + library.getTitle() + "\"");
-                transaction.commit();
-                return null;
-            }
-
+            return books;
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -151,35 +174,39 @@ public class LibraryDAO {
             return null;
         }
     }
- */
 
+    public List<Rent> showAllRents(long libraryId) {
+        return rentDAO.showAllRents(libraryId);
+    }
 
-    public int returnBookToLibrary(LibraryService libraryService, BookService bookService) {
-        Transaction transaction = null;
+    public Reader getReaderById(long readerId) {
+        Transaction transaction = librarySession.getTransaction();
+        Reader reader = null;
         try {
-            transaction = librarySession.beginTransaction();
-            Book selectedBook = librarySession.get(Book.class, bookService.getId());
-            if (selectedBook != null && selectedBook.getLibrary().getId() == libraryService.getId()) {
-                if (selectedBook.isUsingNow()) {
-                    selectedBook.setUsingNow(false);
-                    transaction.commit();
-                    return 1;
-                }
-                else {
-                    System.out.println("Логическая ошибка: книга \"" + bookService.getTitle() + "\" уже находится в библиотеке " + libraryService.getTitle() + ". Поэтому ее нельзя вернуть.");
-                    return 0;
-                }
-            }
-            else {
-                System.out.println("Логическая ошибка: книга \"" + bookService.getTitle() + "\" никогда не находилась в библиотеке " + libraryService.getTitle() + ". Поэтому ее нельзя вернуть.");
-                return 0;
-            }
+            transaction.begin();
+            reader = librarySession.get(Reader.class, readerId);
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
                 e.printStackTrace();
             }
-            return 0;
         }
+        return reader;
     }
+
+    public Library getLibraryById(long libraryId) {
+        Transaction transaction = librarySession.getTransaction();
+        Library library = null;
+        try {
+            transaction.begin();
+            library = librarySession.get(Library.class, libraryId);
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+        }
+        return library;
+    }
+
 }

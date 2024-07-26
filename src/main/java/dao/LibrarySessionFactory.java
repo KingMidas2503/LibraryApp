@@ -1,6 +1,5 @@
 package dao;
 
-
 import models.Book;
 import models.Library;
 import models.Rent;
@@ -28,6 +27,8 @@ public class LibrarySessionFactory {
                 configuration.addAnnotatedClass(Reader.class);
                 configuration.addAnnotatedClass(Rent.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+                //Metadata metadata = new MetadataSources(builder.build()).buildMetadata();
+                //instance.sessionFactory = metadata.buildSessionFactory();
                 instance.sessionFactory = configuration.buildSessionFactory(builder.build());
                 System.out.println("SessionFactory created");
             } catch (Exception e) {

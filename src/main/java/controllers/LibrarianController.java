@@ -1,10 +1,13 @@
 package controllers;
 
 import dto.BookDTO;
+import dto.LibraryDTO;
+import dto.ReaderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import service.LibrarianService;
+import java.util.List;
 
 
 @Controller
@@ -13,8 +16,8 @@ public class LibrarianController implements LibraryUserController {
     @Autowired
     LibrarianService librarianService;
 
-    @RequestMapping("/libraryProject/api/v1/takeABook")
-    public void addABook(long libraryId, BookDTO bookDTO) {
+    @RequestMapping("/libraryProject/api/v1/addBook")
+    public void addBook(long libraryId, BookDTO bookDTO) {
         librarianService.addBook(libraryId, bookDTO);
     }
 
@@ -25,9 +28,20 @@ public class LibrarianController implements LibraryUserController {
         return librarianService.lookAtBook(libraryId, bookId);
     }
 
-    /*@RequestMapping("/libraryProject/api/v1/lookAtAllBook")
+    @RequestMapping("/libraryProject/api/v1/lookAtAllBooks")
     @Override
-    public ArrayList<BookDTO> lookAtAllBooks(long libraryId) {
+    public List<BookDTO> lookAtAllBooks(long libraryId) {
         return librarianService.lookAtAllBooks(libraryId);
-    }*/
+    }
+
+    @RequestMapping("/libraryProject/api/v1/getReaderById")
+    public ReaderDTO getReaderById(long readerId) {
+        return librarianService.getReaderById(readerId);
+    }
+
+    @RequestMapping("/libraryProject/api/v1/getReaderById")
+    @Override
+    public LibraryDTO getLibraryById(long libraryId) {
+        return librarianService.getLibraryById(libraryId);
+    }
 }

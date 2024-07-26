@@ -1,6 +1,9 @@
 package dto;
 
+import lombok.Getter;
 
+
+@Getter
 public class LibrarianDTO {
     private long id;
     private String name;

@@ -1,5 +1,9 @@
 package dto;
 
+import lombok.Getter;
+
+
+@Getter
 public class ReaderDTO {
     private long id;
     private String name;

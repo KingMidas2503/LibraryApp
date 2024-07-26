@@ -2,8 +2,6 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import dao.LibraryDAO;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -27,4 +25,5 @@ public class Library {
         this.title = title;
     }
 
+    public Library() {}
 }
