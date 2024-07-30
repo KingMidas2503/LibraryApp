@@ -7,3 +7,13 @@ spring:
   flyway:
     enabled: true
     locations: classpath:migrations
+
+  config:
+    activate:
+      on-profile: staging
+    datasource:
+      password: pgpwd4habr
+      url: jdbc:postgresql://localhost:5432/habrdb
+      username: habrpguser
+  babel:
+    property: stagingValue
