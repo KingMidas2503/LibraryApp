@@ -3,17 +3,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/habrdb
     username: habrpguser
     password: pgpwd4habr
-
+  jpa:
+    hibernate:
+      ddl-auto: update
+  application:
+    name:
+      LibraryProject
   flyway:
     enabled: true
-    locations: classpath:migrations
-
+    locations: src/main/resources/v1_init_db.sql
+    baselineOnMigrate: true
   config:
     activate:
       on-profile: staging
-    datasource:
-      password: pgpwd4habr
-      url: jdbc:postgresql://localhost:5432/habrdb
-      username: habrpguser
-  babel:
-    property: stagingValue
+

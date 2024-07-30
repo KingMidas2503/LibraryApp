@@ -17,7 +17,7 @@
 
         <flyway.user>habrpguser</flyway.user>
         <flyway.password>pgpwd4habr</flyway.password>
-        <flyway.schemas>public</flyway.schemas>
+        <flyway.schemas>habrdb</flyway.schemas>
 
     </properties>
 

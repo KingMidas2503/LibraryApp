@@ -9,7 +9,7 @@ create table readers
 (id serial primary key, name varchar(50), has_been_to_the_library boolean);
 
 create table librarians
-(id serial primary key, name varchar(50))
+(id serial primary key, name varchar(50));
 
 create table rent
 (id serial primary key, reader_id integer, book_id integer, library_id integer);

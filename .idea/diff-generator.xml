@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DiffGenerationConfig">
+    <option name="snapshotDbValue" value="2c9e5ce8-6018-4974-ae0a-dcac4dc34872" />
     <option name="sourceModelValue" value="Intabia Internship:hibernate.cfg.xml" />
     <option name="targetDbValue" value="2c9e5ce8-6018-4974-ae0a-dcac4dc34872" />
   </component>
