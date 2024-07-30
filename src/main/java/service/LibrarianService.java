@@ -10,17 +10,20 @@ import models.Book;
 import models.Librarian;
 import models.Library;
 import models.Reader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class LibrarianService {
 
     @Getter
     private long id;
     @Getter
     private String name;
-    private LibraryDAO libraryDAO = new LibraryDAO();;
+    private LibraryDAO libraryDAO = new LibraryDAO();
     private LibrarianDAO librarianDAO = new LibrarianDAO();
 
 
@@ -54,7 +57,7 @@ public class LibrarianService {
 
     public void addBook(long libraryId, BookDTO bookDTO) {
         Book book = new Book(bookDTO.getTitle(), bookDTO.getAuthor());
-        book.setUsingNow(false);
+        book.setIsUsingNow(false);
         libraryDAO.saveNewBook(book, libraryId);
     }
 

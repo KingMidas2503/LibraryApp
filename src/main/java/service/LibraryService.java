@@ -19,7 +19,6 @@ import java.util.Map;
 @Getter
 public class LibraryService {
 
-    @Autowired
     private LibraryDAO libraryDAO = new LibraryDAO();
     Map<String, ReaderService> readersRegistry = new HashMap<>();
     List<LibrarianService> workers = new ArrayList<>();

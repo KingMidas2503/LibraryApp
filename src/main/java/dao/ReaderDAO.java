@@ -4,7 +4,10 @@ import models.Reader;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public class ReaderDAO {
 
     private Session readerSession;

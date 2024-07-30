@@ -1,5 +1,6 @@
 package dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
@@ -11,7 +12,7 @@ public class RentDTO {
     private long bookId;
     private long libraryId;
     private String status;
-    String mainString;
+    private String mainString;
 
     public RentDTO(long id, long readerId, long bookId, long libraryId, boolean isActive) {
         this.id = id;

@@ -1,6 +1,6 @@
 package dao;
 
-import dto.LibraryDTO;
+import lombok.extern.slf4j.Slf4j;
 import models.Book;
 import models.Library;
 import models.Reader;
@@ -8,11 +8,12 @@ import models.Rent;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
 @Repository
 public class LibraryDAO {
 
@@ -53,15 +54,15 @@ public class LibraryDAO {
     }
 
     public Book giveABook(long libraryId, long bookId, long readerId) {
-        Transaction transaction = librarySession.getTransaction();
+        Transaction transaction = null;
         try {
-            transaction.begin();
+            transaction = librarySession.beginTransaction();
             Library library = librarySession.get(Library.class, libraryId);
             Book book = librarySession.get(Book.class, bookId);
             librarySession.refresh(book);
             if (book != null && book.getLibraryId() == libraryId) {
                 if (!book.isUsingNow()) {
-                    book.setUsingNow(true);
+                    book.setIsUsingNow(true);
                     librarySession.update(book);
                     transaction.commit();
                     rentDAO.startRent(readerId, bookId, libraryId);
@@ -69,13 +70,13 @@ public class LibraryDAO {
 
                 }
                 else {
-                    System.out.println("Ошибка: книга \"" + book.getTitle() + "\" находится в аренде. Подождите, пока другой читатель вернет ее в библиотеку.");
+                    log.info("Ошибка: книга \"{}\" находится в аренде. Подождите, пока другой читатель вернет ее в библиотеку.", book.getTitle());
                     transaction.rollback();
                     return null;
                 }
             }
             else {
-                System.out.println("Ошибка: книга с указанным id не найдена в библиотеке \"" + library.getTitle() + "\"");
+                log.info("Ошибка: книга с указанным id не найдена в библиотеке \"{}\"", library.getTitle());
                 transaction.commit();
                 return null;
             }
@@ -89,27 +90,27 @@ public class LibraryDAO {
         }
     }
     public void acceptTheBook(long libraryId, long bookId, long readerId) {
-        Transaction transaction = librarySession.getTransaction();
+        Transaction transaction = null;
         try {
-            transaction.begin();
+            transaction = librarySession.beginTransaction();
             Library library = librarySession.get(Library.class, libraryId);
             Book book = librarySession.get(Book.class, bookId);
             librarySession.refresh(book);
             if (book != null && book.getLibraryId() == libraryId) {
                 if (book.isUsingNow()) {
-                    book.setUsingNow(false);
+                    book.setIsUsingNow(false);
                     librarySession.update(book);
                     transaction.commit();
                     rentDAO.stopRent(readerId, bookId, libraryId);
-                    System.out.println("Книга \"" + book.getTitle() + "\" благополучно возвращена в библиотеку!");
+                    log.info("Книга \"{}\" благополучно возвращена в библиотеку!", book.getTitle());
                 }
                 else {
-                    System.out.println("Ошибка: у читателя с указанным id нет книги \"" + book.getTitle() + "\" в пользовании. Поэтому он не может ее вернуть");
+                    log.info("Ошибка: у читателя с указанным id нет книги \"{}\" в пользовании. Поэтому он не может ее вернуть", book.getTitle());
                     transaction.commit();
                 }
             }
             else {
-                System.out.println("Ошибка: книги с указанным id не было библиотеке \"" + library.getTitle() + "\". Поэтому ее нельзя вернуть");
+                log.info("Ошибка: книги с указанным id не было библиотеке \"{}\". Поэтому ее нельзя вернуть", library.getTitle());
             }
 
         } catch (HibernateException e) {
@@ -132,12 +133,12 @@ public class LibraryDAO {
                     transaction.commit();
                     return book;
                 } else {
-                    System.out.println("Ошибка: книга \"" + book.getTitle() + "\" находится в аренде. Ее нельзя посмотреть, не имея прав библиотекаря.");
+                    log.info("Ошибка: книга \"{}\" находится в аренде. Ее нельзя посмотреть, не имея прав библиотекаря.", book.getTitle());
                     return null;
                 }
             }
             else {
-                System.out.println("Ошибка: книга с указанным id не найдена в библиотеке \"" + library.getTitle() + "\"");
+                log.info("Ошибка: книга с указанным id не найдена в библиотеке \"{}\"", library.getTitle());
                 transaction.commit();
                 return null;
             }
@@ -180,10 +181,10 @@ public class LibraryDAO {
     }
 
     public Reader getReaderById(long readerId) {
-        Transaction transaction = librarySession.getTransaction();
         Reader reader = null;
+        Transaction transaction = null;
         try {
-            transaction.begin();
+            transaction = librarySession.beginTransaction();
             reader = librarySession.get(Reader.class, readerId);
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -195,10 +196,10 @@ public class LibraryDAO {
     }
 
     public Library getLibraryById(long libraryId) {
-        Transaction transaction = librarySession.getTransaction();
         Library library = null;
+        Transaction transaction = null;
         try {
-            transaction.begin();
+            transaction = librarySession.beginTransaction();
             library = librarySession.get(Library.class, libraryId);
         } catch (HibernateException e) {
             if (transaction != null) {

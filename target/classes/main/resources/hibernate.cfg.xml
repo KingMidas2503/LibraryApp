@@ -2,17 +2,16 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/habrdb</property>
-        <property name="connection.username">habrpguser</property>
-        <property name="connection.password">pgpwd4habr</property>
-        <property name="hibernate.show_sql ">true</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="connection.url"></property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">postgres</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="main.java.models.Book"/>
-        <mapping class="main.java.models.Librarin"/>
-        <mapping class="main.java.models.Library"/>
-        <mapping class="main.java.models.Reader"/>
-        <mapping class="main.java.models.Rent"/>
-        <mapping class="main.java.models.Librarian"/>
+        <mapping class="models.Book"/>
+        <mapping class="models.Librarian"/>
+        <mapping class="models.Library"/>
+        <mapping class="models.Reader"/>
+        <mapping class="models.Rent"/>
     </session-factory>
 </hibernate-configuration>

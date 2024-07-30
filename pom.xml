@@ -81,6 +81,11 @@
             <version>3.3.1</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
             <version>10.15.2</version>
@@ -128,14 +133,14 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>10.15.2</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/habrdb</url>
-                    <user>habrpguser</user>
-                    <password>pgpwd4habr</password>
+                    <url>jdbc:postgresql://localhost:5432/dblibrary</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
                     <schemas>
-                        <schema>schemaName</schema>
+                        <schema>public</schema>
                     </schemas>
                     <locations>
-                        <location>src/main/resources/v1_init_db.sql</location>
+                        <location>filesystem:src\main\resources\v1_init_db.sql</location>
                     </locations>
                 </configuration>
             </plugin>

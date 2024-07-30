@@ -3,6 +3,7 @@ package controllers;
 import dto.BookDTO;
 import dto.LibraryDTO;
 import dto.ReaderDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,10 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class LibrarianController implements LibraryUserController {
 
-    @Autowired
-    LibrarianService librarianService;
+    private final LibrarianService librarianService;
 
     @RequestMapping("/libraryProject/api/v1/addBook")
     public void addBook(long libraryId, BookDTO bookDTO) {

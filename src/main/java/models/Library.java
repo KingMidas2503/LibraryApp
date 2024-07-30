@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 @Entity
 @Table(name = "library")
 public class Library {
@@ -14,7 +16,7 @@ public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "library")
     private List<Book> books = new ArrayList<>();

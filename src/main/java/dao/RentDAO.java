@@ -46,7 +46,7 @@ public class RentDAO {
             Rent checkRent = rentSession.get(Rent.class, rentId);
             rentSession.refresh(checkRent);
             if (checkRent != null && checkRent.getReaderId() == readerId && checkRent.getLibraryId() == libraryId) {
-                checkRent.setActive(false);
+                checkRent.setIsActive(false);
             }
             rentSession.update(checkRent);
             transaction.commit();

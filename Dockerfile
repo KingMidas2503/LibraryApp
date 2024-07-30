@@ -1,3 +1,3 @@
-FROM maven:3.9.8
+FROM maven:4.0.0
 COPY target/*.jar /app.jar
 CMD ["java", "-jar", "/app.jar"]

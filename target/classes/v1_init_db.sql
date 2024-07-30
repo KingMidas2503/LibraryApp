@@ -1,6 +1,5 @@
 -- noinspection SqlResolveForFile
-
-create table book
+create table books
 (id serial primary key, title varchar(50) not null, author varchar(50) not null, library_id integer, is_using_now boolean);
 
 create table library

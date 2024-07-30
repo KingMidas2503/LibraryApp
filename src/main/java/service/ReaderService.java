@@ -8,6 +8,7 @@ import lombok.Getter;
 import models.Book;
 import models.Library;
 import models.Reader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,13 @@ public class ReaderService {
     private String name;
     @Getter
     private boolean hasBeenToTheLibrary;
+
     private LibraryDAO libraryDAO = new LibraryDAO();
     private ReaderDAO readerDAO = new ReaderDAO();
 
     public ReaderService(String name) {
         this.name = name;
-        hasBeenToTheLibrary = false;
+        this.hasBeenToTheLibrary = false;
         Reader reader = new Reader(name);
         readerDAO.saveNewReader(reader);
         this.id = reader.getId();

@@ -1,5 +1,6 @@
 package dao;
 
+import lombok.extern.slf4j.Slf4j;
 import models.Book;
 import models.Library;
 import models.Rent;
@@ -8,7 +9,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import java.io.Reader;
 
-
+@Slf4j
 public class LibrarySessionFactory {
 
     private static LibrarySessionFactory instance = new LibrarySessionFactory();;
@@ -27,12 +28,10 @@ public class LibrarySessionFactory {
                 configuration.addAnnotatedClass(Reader.class);
                 configuration.addAnnotatedClass(Rent.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-                //Metadata metadata = new MetadataSources(builder.build()).buildMetadata();
-                //instance.sessionFactory = metadata.buildSessionFactory();
                 instance.sessionFactory = configuration.buildSessionFactory(builder.build());
-                System.out.println("SessionFactory created");
+                log.info("SessionFactory created");
             } catch (Exception e) {
-                System.out.println("Происходит какая-то фигня: " + e.getMessage());
+                log.info("Происходит какая-то фигня: {}", e.getMessage());
                 throw new ExceptionInInitializerError(e);
             }
         }
