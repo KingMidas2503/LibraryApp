@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Getter
 public class BookService {
 
-    private long id;
+    /*private long id;
     private String title;
     private String author;
     @Setter
@@ -22,6 +22,6 @@ public class BookService {
     public BookService(String title, String author) {
         this.title = title;
         this.author = author;
-    }
+    }*/
 
 }

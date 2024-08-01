@@ -19,20 +19,8 @@ import java.util.List;
 @Service
 public class LibrarianService {
 
-    @Getter
-    private long id;
-    @Getter
-    private String name;
     private LibraryDAO libraryDAO = new LibraryDAO();
     private LibrarianDAO librarianDAO = new LibrarianDAO();
-
-
-    public LibrarianService(String name) {
-        this.name = name;
-        Librarian librarian = new Librarian(name);
-        librarianDAO.saveNewLibrarian(librarian);
-        this.id = librarian.getId();
-    }
 
     public BookDTO lookAtBook(long libraryId, long bookId) {
         Book book = libraryDAO.showABook(libraryId, bookId, true);

@@ -1,21 +1,33 @@
 package ru.intabia.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.intabia.dto.BookDTO;
 import ru.intabia.dto.RentDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.intabia.service.LibraryService;
 import java.util.List;
 
 
-@Controller
-@RequiredArgsConstructor
+@RestController
 public class LibraryController {
 
     private final LibraryService libraryService;
 
-    @RequestMapping("/libraryProject/api/v1/showRentTable")
-    public List<RentDTO> showRentTable() {
-        return libraryService.showRentTable();
+    @Autowired
+    public LibraryController(LibraryService libraryService) {
+        this.libraryService = libraryService;
+    }
+
+    @GetMapping(value = "/rent")
+    public ResponseEntity<List<RentDTO>> showRentTable(@PathVariable(name="libraryId") long libraryId) {
+        List<RentDTO> rentDTOs = libraryService.showRentTable(libraryId);
+        return rentDTOs != null && !rentDTOs.isEmpty() ? new ResponseEntity<>(rentDTOs, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @PostMapping(value = "/books")
+    public ResponseEntity<?> addNewBook(@RequestBody BookDTO bookDTO, @PathVariable(name="libraryId") long libraryId) {
+        libraryService.addNewBook(bookDTO, libraryId);
+        return ResponseEntity.ok().build();
     }
 }

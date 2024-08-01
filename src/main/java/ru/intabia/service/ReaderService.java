@@ -5,6 +5,7 @@ import ru.intabia.dao.ReaderDAO;
 import ru.intabia.dto.BookDTO;
 import ru.intabia.dto.LibraryDTO;
 import lombok.Getter;
+import ru.intabia.dto.ReaderDTO;
 import ru.intabia.models.Book;
 import ru.intabia.models.Library;
 import ru.intabia.models.Reader;
@@ -25,12 +26,9 @@ public class ReaderService {
     private LibraryDAO libraryDAO = new LibraryDAO();
     private ReaderDAO readerDAO = new ReaderDAO();
 
-    public ReaderService(String name) {
-        this.name = name;
-        this.hasBeenToTheLibrary = false;
-        Reader reader = new Reader(name);
+    public void saveNewReader(ReaderDTO readerDTO) {
+        Reader reader = new Reader(readerDTO.getName());
         readerDAO.saveNewReader(reader);
-        this.id = reader.getId();
     }
 
     public BookDTO takeABook(long libraryId, long bookId) {
