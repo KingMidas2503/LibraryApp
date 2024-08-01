@@ -12,6 +12,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("librarian")
 public class LibrarianController implements LibraryUserController {
 
     private final LibrarianService librarianService;
@@ -21,12 +22,11 @@ public class LibrarianController implements LibraryUserController {
         this.librarianService = librarianService;
     }
 
-    @PostMapping(value = "/books/api/data")
+    @PostMapping(value = "/addBook/{id}")
     public ResponseEntity<?> addBook(@PathVariable(name="libraryId") long libraryId, @RequestBody BookDTO bookDTO) {
         librarianService.addBook(libraryId, bookDTO);
         return ResponseEntity.ok().build();
     }
-
 
     @GetMapping(value = "/books")
     @Override
