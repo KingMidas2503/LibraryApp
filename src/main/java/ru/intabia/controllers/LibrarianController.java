@@ -28,27 +28,27 @@ public class LibrarianController implements LibraryUserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/books")
+    @GetMapping(value = "/lookAtBook/{id}")
     @Override
     public ResponseEntity<BookDTO> lookAtBook(@PathVariable(name="libraryId") long libraryId, @PathVariable(name="bookId") long bookId) {
         BookDTO bookDTO = librarianService.lookAtBook(libraryId, bookId);
         return bookDTO != null ? new ResponseEntity<>(bookDTO, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/books")
+    @GetMapping(value = "/lookAtAllBooks/{id}")
     @Override
     public ResponseEntity<List<BookDTO>> lookAtAllBooks(@PathVariable(name="libraryId") long libraryId) {
         List<BookDTO> allBooks = librarianService.lookAtAllBooks(libraryId);
         return allBooks != null && !allBooks.isEmpty() ? new ResponseEntity<>(allBooks, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/readers")
+    @GetMapping(value = "/getReaderById/{id}")
     public ResponseEntity<ReaderDTO> getReaderById(@PathVariable(name="readerId") long readerId) {
         ReaderDTO readerDTO = librarianService.getReaderById(readerId);
         return readerDTO != null ? new ResponseEntity<>(readerDTO, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/library")
+    @GetMapping(value = "/getLibraryById/{id}")
     @Override
     public ResponseEntity<LibraryDTO> getLibraryById(@PathVariable(name="libraryId") long libraryId) {
         LibraryDTO libraryDTO = librarianService.getLibraryById(libraryId);

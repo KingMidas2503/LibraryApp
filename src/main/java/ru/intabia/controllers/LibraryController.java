@@ -11,6 +11,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("library")
 public class LibraryController {
 
     private final LibraryService libraryService;
@@ -20,12 +21,12 @@ public class LibraryController {
         this.libraryService = libraryService;
     }
 
-    @GetMapping(value = "/rent")
+    @GetMapping(value = "/showRentTable/{id}")
     public ResponseEntity<List<RentDTO>> showRentTable(@PathVariable(name="libraryId") long libraryId) {
         List<RentDTO> rentDTOs = libraryService.showRentTable(libraryId);
         return rentDTOs != null && !rentDTOs.isEmpty() ? new ResponseEntity<>(rentDTOs, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping(value = "/books")
+    @PostMapping(value = "/addNewBook/{id}")
     public ResponseEntity<?> addNewBook(@RequestBody BookDTO bookDTO, @PathVariable(name="libraryId") long libraryId) {
         libraryService.addNewBook(bookDTO, libraryId);
         return ResponseEntity.ok().build();
