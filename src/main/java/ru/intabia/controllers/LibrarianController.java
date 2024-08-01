@@ -21,7 +21,7 @@ public class LibrarianController implements LibraryUserController {
         this.librarianService = librarianService;
     }
 
-    @PostMapping(value = "/books")
+    @PostMapping(value = "/books/api/data")
     public ResponseEntity<?> addBook(@PathVariable(name="libraryId") long libraryId, @RequestBody BookDTO bookDTO) {
         librarianService.addBook(libraryId, bookDTO);
         return ResponseEntity.ok().build();

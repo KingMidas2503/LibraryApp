@@ -1,18 +1,14 @@
 package ru.intabia.service;
 
-
 import ru.intabia.dao.LibrarianDAO;
 import ru.intabia.dao.LibraryDAO;
 import ru.intabia.dto.BookDTO;
 import ru.intabia.dto.LibraryDTO;
 import ru.intabia.dto.ReaderDTO;
-import lombok.Getter;
 import ru.intabia.models.Book;
-import ru.intabia.models.Librarian;
 import ru.intabia.models.Library;
 import ru.intabia.models.Reader;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
