@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ReaderDAO {
 
-    private Session readerSession;
+    private final Session readerSession;
 
     public ReaderDAO() {
         readerSession = LibrarySessionFactory.getSessionFactory().openSession();
@@ -29,4 +29,21 @@ public class ReaderDAO {
             }
         }
     }
+
+
+    public Reader getReaderById(long readerId) {
+        Reader reader = null;
+        Transaction transaction = null;
+        try {
+            transaction = readerSession.beginTransaction();
+            reader = readerSession.get(Reader.class, readerId);
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+        }
+        return reader;
+    }
+
 }

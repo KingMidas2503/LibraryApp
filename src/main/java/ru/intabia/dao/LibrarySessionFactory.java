@@ -12,7 +12,7 @@ import java.io.Reader;
 @Slf4j
 public class LibrarySessionFactory {
 
-    private static LibrarySessionFactory instance = new LibrarySessionFactory();;
+    private static LibrarySessionFactory instance = new LibrarySessionFactory();
 
     private SessionFactory sessionFactory;
 

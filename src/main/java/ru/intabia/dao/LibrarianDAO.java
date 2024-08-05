@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class LibrarianDAO {
 
-    private Session librarianSession;
+    private final Session librarianSession;
 
     public LibrarianDAO() {
         librarianSession = LibrarySessionFactory.getSessionFactory().openSession();

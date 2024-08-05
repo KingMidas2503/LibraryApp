@@ -1,22 +1,19 @@
 package ru.intabia.dao;
 
+import ru.intabia.models.Rent;
 import ru.intabia.models.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
 public class RentDAO {
 
-    private Session rentSession;
-
-    private Map<Long, Long> rentMap = new HashMap<>();
+    private final Session rentSession;
 
     public RentDAO() {
         rentSession = LibrarySessionFactory.getSessionFactory().openSession();
@@ -28,7 +25,6 @@ public class RentDAO {
             Rent rent = new Rent(readerId, bookId, libraryId);
             transaction = rentSession.beginTransaction();
             rentSession.save(rent);
-            rentMap.put(bookId, rent.getId());
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -37,11 +33,10 @@ public class RentDAO {
             }
         }
     }
-    public void stopRent(long readerId, long bookId, long libraryId) {
+
+    public void stopRent(long readerId, long rentId, long libraryId) {
         Transaction transaction = null;
         try {
-            long rentId = rentMap.get(bookId);
-            rentMap.remove(bookId);
             transaction = rentSession.beginTransaction();
             Rent checkRent = rentSession.get(Rent.class, rentId);
             rentSession.refresh(checkRent);

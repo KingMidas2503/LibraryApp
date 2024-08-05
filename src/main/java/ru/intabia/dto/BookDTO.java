@@ -17,3 +17,4 @@ public class BookDTO {
         return "id: " + id + "; книга: \"" + title + "\"; автор: " + author;
     }
 }
+

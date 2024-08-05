@@ -1,3 +1,4 @@
+/*
 package ru.intabia.service;
 
 import ru.intabia.dao.LibrarianDAO;
@@ -61,3 +62,4 @@ public class LibrarianService {
     }
 
 }
+*/
