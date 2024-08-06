@@ -5,12 +5,17 @@ import lombok.Getter;
 
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 public class BookDTO {
 
     private long id;
     private String title;
     private String author;
+
+    public BookDTO(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
 
     @Override
     public String toString() {

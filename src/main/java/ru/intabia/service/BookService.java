@@ -18,7 +18,7 @@ public class BookService {
     public BookDTO lookAtBook(long libraryId, long bookId) {
         Book book = bookDAO.showABook(libraryId, bookId, true);
         if (book != null) {
-            return new BookDTO(book.getId(), book.getTitle(), book.getAuthor());
+            return new BookDTO(/*book.getId(), */book.getTitle(), book.getAuthor());
         }
         return null;
     }
@@ -28,7 +28,7 @@ public class BookService {
         List<BookDTO> bookDTOs = new ArrayList<>();
         if (bookModels != null && !bookModels.isEmpty()) {
             for (Book book : bookModels) {
-                bookDTOs.add(new BookDTO(book.getId(), book.getTitle(), book.getAuthor()));
+                bookDTOs.add(new BookDTO(/*book.getId(), */book.getTitle(), book.getAuthor()));
             }
             return bookDTOs;
         }
@@ -44,7 +44,7 @@ public class BookService {
     public BookDTO takeABook(long libraryId, long bookId, long readerId) {
         Book book = bookDAO.giveABook(libraryId, bookId, readerId);
         if (book != null) {
-            return new BookDTO(book.getId(), book.getTitle(), book.getAuthor());
+            return new BookDTO(/*book.getId(), */book.getTitle(), book.getAuthor());
         }
         return null;
     }
