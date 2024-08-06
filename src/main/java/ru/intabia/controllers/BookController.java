@@ -32,7 +32,6 @@ public class BookController {
     @GetMapping(value = "/lookAtBook/{bookId}")
     public ResponseEntity<BookDTO> lookAtBook(@RequestParam(name = "libraryId") long libraryId,
                                               @PathVariable(name = "bookId") long bookId) {
-
         BookDTO bookDTO = bookService.lookAtBook(libraryId, bookId);
         return bookDTO != null
                 ? new ResponseEntity<>(bookDTO, HttpStatus.OK)
