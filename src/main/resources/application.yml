@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: library-service
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+    locations: classpath:migrations
+    baseline-on-migrate: true
+  datasource:
+    url: jdbc:postgresql://postgres-server-global:5432/dblibrary
+    username: dblibrary
+    password: dblibrary
+server:
+  port: 8080
