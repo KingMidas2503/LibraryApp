@@ -12,5 +12,28 @@ spring:
     url: jdbc:postgresql://postgres-server-global:5432/dblibrary
     username: dblibrary
     password: dblibrary
-server:
-  port: 8080
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: kuzmin-microservices
+            client-secret: MEwkjp95maIDOxYtJiBXe45yL7ULL2Pv
+            authorization-grant-type: authorization_code
+            redirect-uri: "https://192.168.1.193:8080/auth/redirect"
+        provider:
+          keycloak:
+            authorization-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/auth
+            token-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/token
+            user-info-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/userinfo
+            user-name-attribute: librarian
+keycloak:
+  realm: library-app
+  auth-server-url: https://192.168.1.193:8080/auth
+  ssl-required: external
+  resource: kuzmin-microservices
+  credentials:
+    secret: MEwkjp95maIDOxYtJiBXe45yL7ULL2Pv
+  use-resource-role-mappings: true
+  public-client: false
+  bearer-only: false
