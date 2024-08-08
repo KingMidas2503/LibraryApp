@@ -1,32 +1,32 @@
 package ru.intabia.dao;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import ru.intabia.models.Librarian;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import ru.intabia.models.Reader;
 
 
 @Repository
 public class LibrarianDAO {
 
-    private final Session librarianSession;
+    private final EntityManager entityManager;
 
-    public LibrarianDAO() {
-        librarianSession = LibrarySessionFactory.getSessionFactory().openSession();
+    public LibrarianDAO(EntityManagerFactory entityManagerFactory) {
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     public void saveNewLibrarian(Librarian librarian) {
-        Transaction transaction = null;
-        try {
-            transaction = librarianSession.beginTransaction();
-            librarianSession.save(librarian);
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-                e.printStackTrace();
-            }
+        try (Session session = entityManager.unwrap(Session.class)) {
+            session.persist(librarian);
         }
     }
+
+    public Librarian getLibrarianById(long librarianId) {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            return session.get(Librarian.class, librarianId);
+        }
+    }
+
 }

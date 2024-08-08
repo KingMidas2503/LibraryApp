@@ -19,7 +19,6 @@ public class Librarian {
     @Column
     private String name;
 
-
     public Librarian(String name) {
         this.name = name;
     }

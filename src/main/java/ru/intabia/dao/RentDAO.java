@@ -1,6 +1,8 @@
 package ru.intabia.dao;
 
-import ru.intabia.models.Rent;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
 import ru.intabia.models.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -11,44 +13,36 @@ import java.util.List;
 
 
 @Repository
+@Slf4j
 public class RentDAO {
 
-    private final Session rentSession;
+    private final EntityManager entityManager;
 
-    public RentDAO() {
-        rentSession = LibrarySessionFactory.getSessionFactory().openSession();
+    public RentDAO(EntityManagerFactory entityManagerFactory) {
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     public void startRent(long readerId, long bookId, long libraryId) {
-        Transaction transaction = null;
-        try {
-            Rent rent = new Rent(readerId, bookId, libraryId);
-            transaction = rentSession.beginTransaction();
-            rentSession.save(rent);
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-                e.printStackTrace();
-            }
+        try (Session session = entityManager.unwrap(Session.class)) {
+            session.persist(new Rent(readerId, bookId, libraryId));
         }
     }
 
     public void stopRent(long readerId, long rentId, long libraryId) {
         Transaction transaction = null;
-        try {
-            transaction = rentSession.beginTransaction();
-            Rent checkRent = rentSession.get(Rent.class, rentId);
-            rentSession.refresh(checkRent);
+        try (Session session = entityManager.unwrap(Session.class)) {
+            transaction = session.beginTransaction();
+            Rent checkRent = session.get(Rent.class, rentId);
+            session.refresh(checkRent);
             if (checkRent != null && checkRent.getReaderId() == readerId && checkRent.getLibraryId() == libraryId) {
                 checkRent.setIsActive(false);
             }
-            rentSession.update(checkRent);
+            session.persist(checkRent);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
     }
@@ -56,13 +50,13 @@ public class RentDAO {
     public List<Rent> showAllRents(long libraryId) {
         Transaction transaction = null;
         List<Rent> rents = new ArrayList<>();
-        try {
-            transaction = rentSession.beginTransaction();
-            List<Long> ids = rentSession.createQuery("select id from Rent").list();
+        try (Session session = entityManager.unwrap(Session.class)) {
+            transaction = session.beginTransaction();
+            List<Long> ids = session.createQuery("select id from Rent").list();
             for (int i = 0; i < ids.size(); i++) {
                 long id = ids.get(i);
-                Rent rent = rentSession.get(Rent.class, id);
-                rentSession.refresh(rent);
+                Rent rent = session.get(Rent.class, id);
+                session.refresh(rent);
                 if (rent.getLibraryId() == libraryId) {
                     rents.add(rent);
                 }
@@ -71,7 +65,7 @@ public class RentDAO {
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
             return null;
         }

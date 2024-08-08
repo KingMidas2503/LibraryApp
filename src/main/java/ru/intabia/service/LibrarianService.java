@@ -1,65 +1,32 @@
-/*
 package ru.intabia.service;
 
-import ru.intabia.dao.LibrarianDAO;
-import ru.intabia.dao.LibraryDAO;
-import ru.intabia.dto.BookDTO;
-import ru.intabia.dto.LibraryDTO;
-import ru.intabia.dto.ReaderDTO;
-import ru.intabia.models.Book;
-import ru.intabia.models.Library;
-import ru.intabia.models.Reader;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+import ru.intabia.dao.LibrarianDAO;
+import ru.intabia.dao.ReaderDAO;
+import ru.intabia.dto.LibrarianDTO;
+import ru.intabia.dto.ReaderDTO;
+import ru.intabia.models.Librarian;
+import ru.intabia.models.Reader;
+
 
 @Service
+@RequiredArgsConstructor
 public class LibrarianService {
 
-    private LibraryDAO libraryDAO = new LibraryDAO();
-    private LibrarianDAO librarianDAO = new LibrarianDAO();
+    private final LibrarianDAO librarianDAO;
 
-    public BookDTO lookAtBook(long libraryId, long bookId) {
-        Book book = libraryDAO.showABook(libraryId, bookId, true);
-        if (book != null) {
-            BookDTO bookDTO = new BookDTO(book.getId(), book.getTitle(), book.getAuthor());
-            return bookDTO;
+    public void saveNewLibrarian(LibrarianDTO librarianDTO) {
+        Librarian librarian = new Librarian(librarianDTO.getName());
+        librarianDAO.saveNewLibrarian(librarian);
+    }
+
+    public LibrarianDTO getLibrarianById(long librarianId) {
+        Librarian librarian = librarianDAO.getLibrarianById(librarianId);
+        if (librarian != null) {
+            return new LibrarianDTO(librarianId, librarian.getName());
         }
         return null;
     }
-
-    public List<BookDTO> lookAtAllBooks(long libraryId) {
-        List<Book> bookModels = libraryDAO.showAllBooks(libraryId, true);
-        List<BookDTO> bookDTOs = new ArrayList<>();
-        if (bookModels != null && !bookModels.isEmpty()) {
-            for (Book book : bookModels) {
-                bookDTOs.add(new BookDTO(book.getId(), book.getTitle(), book.getAuthor()));
-            }
-            return bookDTOs;
-        }
-        return null;
-    }
-
-    public void addBook(long libraryId, BookDTO bookDTO) {
-        Book book = new Book(bookDTO.getTitle(), bookDTO.getAuthor());
-        book.setIsUsingNow(false);
-        libraryDAO.saveNewBook(book, libraryId);
-    }
-
-    public ReaderDTO getReaderById(long readerId) {
-        Reader reader = libraryDAO.getReaderById(readerId);
-        if (reader != null) {
-            ReaderDTO readerDTO = new ReaderDTO(readerId, reader.getName());
-            return readerDTO;
-        }
-        return null;
-    }
-
-    public LibraryDTO getLibraryById(long libraryId) {
-        Library library = libraryDAO.getLibraryById(libraryId);
-        LibraryDTO libraryDTO = new LibraryDTO(library.getId(), library.getTitle());
-        return libraryDTO;
-    }
-
 }
-*/

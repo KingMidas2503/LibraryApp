@@ -9,19 +9,19 @@ insert into books (title, author, library_id, is_using_now) values ('Филос�
 insert into books (title, author, library_id, is_using_now) values ('Карьера менеджера', 'Ли Якокка', 1, false);
 
 create table if not exists public.library
-(id serial primary key, title varchar(50));
+(id serial primary key, title varchar(50) not null);
 
 insert into library (title) values ('King Midas Library');
 
 create table if not exists public.readers
-(id serial primary key, name varchar(50), has_been_to_the_library boolean);
+(id serial primary key, name varchar(50) not null, has_been_to_the_library boolean);
 
 insert into readers (name, has_been_to_the_library) values ('Иван IV', false);
 insert into readers (name, has_been_to_the_library) values ('Пётр I', false);
 insert into readers (name, has_been_to_the_library) values ('Александр II', false);
 
 create table if not exists public.librarians
-(id serial primary key, name varchar(50));
+(id serial primary key, name varchar(50) not null);
 
 insert into librarians (name) values ('Ибрагим');
 insert into librarians (name) values ('Остап');

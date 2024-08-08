@@ -28,7 +28,7 @@ public class Rent {
         this.readerId = readerId;
         this.bookId = bookId;
         this.libraryId = libraryId;
-        isActive = true;
+        this.isActive = true;
     }
 
     public boolean isActive() {

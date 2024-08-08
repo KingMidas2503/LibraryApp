@@ -1,20 +1,39 @@
 package ru.intabia.dao;
 
-
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 import ru.intabia.models.Library;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+
 
 @Slf4j
 @Repository
-@RequiredArgsConstructor
 public class LibraryDAO {
 
-    private final Session librarySession;
+    private final EntityManager entityManager;
+
+    public LibraryDAO(EntityManagerFactory entityManagerFactory) {
+        entityManager = entityManagerFactory.createEntityManager();
+    }
+
+    public void saveNewLibrary(Library library) {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            session.persist(library);
+        }
+    }
+
+    public Library getLibraryById(long libraryId) {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            return session.get(Library.class, libraryId);
+        }
+    }
+
+}
+
+
+    /*private final Session librarySession;
 
     public LibraryDAO() {
         librarySession = LibrarySessionFactory.getSessionFactory().openSession();
@@ -49,5 +68,5 @@ public class LibraryDAO {
         return library;
     }
 
-}
+}*/
 

@@ -29,4 +29,4 @@ insert into librarians (name) values ('Пафнутий');
 insert into librarians (name) values ('Венеамин');
 
 create table if not exists public.rent
-(id serial primary key, reader_id integer, book_id integer, library_id integer);
+(id serial primary key, reader_id integer, book_id integer, library_id integer, is_active boolean);
