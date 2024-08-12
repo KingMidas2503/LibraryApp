@@ -27,9 +27,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        String jwkSetUri = "http://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connect/certs";
+        String jwkSetUri = "http://192.168.1.193:8080/realms/library-app/protocol/openid-connect/certs";
         return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
     }
-
-
 }

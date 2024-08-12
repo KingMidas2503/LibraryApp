@@ -53,4 +53,3 @@ public class BookService {
         bookDAO.acceptTheBook(libraryId, bookId, readerId);
     }
 }
-

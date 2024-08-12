@@ -22,12 +22,10 @@ public class ReaderDAO {
         }
     }
 
-
     public Reader getReaderById(long readerId) {
         try (Session session = entityManager.unwrap(Session.class)) {
             return session.get(Reader.class, readerId);
         }
     }
-
-
 }
+

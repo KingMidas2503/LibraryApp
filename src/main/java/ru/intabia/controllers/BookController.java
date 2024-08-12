@@ -46,9 +46,9 @@ public class BookController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/takeABook/{bookId}")
-    public ResponseEntity<BookDTO> takeABook(@RequestParam(name="libraryId") long libraryId,
-                                             @RequestParam(name="readerId") long readerId,
+    @GetMapping(value = "/takeABook/{libraryId}/{readerId}/{bookId}")
+    public ResponseEntity<BookDTO> takeABook(@PathVariable(name="libraryId") long libraryId,
+                                             @PathVariable(name="readerId") long readerId,
                                              @PathVariable(name="bookId") long bookId) {
 
         BookDTO bookDTO = bookService.takeABook(libraryId, bookId, readerId);
@@ -57,9 +57,9 @@ public class BookController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping(value = "/returnTheBook/{bookId}")
-    public ResponseEntity<?> returnTheBook(@RequestParam(name="libraryId") long libraryId,
-                                           @RequestParam(name="readerId") long readerId,
+    @PatchMapping(value = "/returnTheBook/{libraryId}/{readerId}/{bookId}")
+    public ResponseEntity<?> returnTheBook(@PathVariable(name="libraryId") long libraryId,
+                                           @PathVariable(name="readerId") long readerId,
                                            @PathVariable(name="bookId") long bookId) {
 
         bookService.returnTheBook(libraryId, bookId, readerId);

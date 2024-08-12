@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManagerFactory;
 import ru.intabia.models.Librarian;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import ru.intabia.models.Reader;
 
 
 @Repository
@@ -30,3 +29,4 @@ public class LibrarianDAO {
     }
 
 }
+
