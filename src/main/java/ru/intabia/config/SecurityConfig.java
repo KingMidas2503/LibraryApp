@@ -33,7 +33,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
 
-    @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
+    //@Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
     private String jwkSetUri = "http://192.168.1.193:8080/realms/library-app/protocol/openid-connect/certs";
 
     @Bean
