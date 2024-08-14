@@ -9,7 +9,7 @@ import ru.intabia.service.LibrarianService;
 
 
 @RestController
-@RequestMapping("reader")
+@RequestMapping("librarian")
 @RequiredArgsConstructor
 public class LibrarianController {
 
