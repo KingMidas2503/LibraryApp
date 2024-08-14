@@ -28,6 +28,7 @@ spring:
             redirect-uri: "https://192.168.1.193:8080/auth/redirect"
         provider:
           keycloak:
+            issuer-uri: http://192.168.1.193:8080/realms/library-app
             authorization-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/auth
             token-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/token
             user-info-uri: https://192.168.1.193:8080/auth/realms/library-app/protocol/openid-connection/userinfo

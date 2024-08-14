@@ -33,8 +33,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
 
-    //@Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
-    private String jwkSetUri = "http://192.168.1.193:8080/realms/library-app/protocol/openid-connect/certs";
+    @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
+    private String jwkSetUri;
 
     @Bean
     public JwtAuthenticationConverter customJwtAuthenticationConverter() {
@@ -50,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+        return NimbusJwtDecoder.withJwkSetUri(jwkSetUri + "/protocol/openid-connect/certs").build();
     }
 
     @Bean
@@ -62,9 +62,9 @@ public class SecurityConfig {
                         .requestMatchers("/admin/library/*").hasAnyRole(Role.READER.value, Role.LIBRARIAN.value)
                         .requestMatchers("admin/reader/*").hasRole(Role.READER.value)
                         .requestMatchers("admin/rent/*").hasAnyRole(Role.LIBRARIAN.value, Role.READER.value)
-                        .requestMatchers(HttpMethod.POST).hasRole("Rector")
-                        .requestMatchers(HttpMethod.PUT).hasRole("Rector")
-                        .requestMatchers(HttpMethod.DELETE).hasRole("Rector")
+                        .requestMatchers(HttpMethod.POST).hasRole("Librarian")
+                        .requestMatchers(HttpMethod.PUT).hasRole("Librarian")
+                        .requestMatchers(HttpMethod.DELETE).hasRole("Librarian")
                         .anyRequest().permitAll()
                 ).oauth2Login(withDefaults())
                 .oauth2ResourceServer(oauth2 ->
@@ -73,7 +73,7 @@ public class SecurityConfig {
                         )
                 ).logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl(jwkSetUri)
+                        .logoutSuccessUrl(jwkSetUri + "/protocol/openid-connect/certs")
                 )
                 .build();
     }

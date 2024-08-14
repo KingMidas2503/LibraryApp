@@ -31,7 +31,7 @@ public class BookDAO {
     @Transactional
     public List<Book> showAllBooks(long libraryId) {
         Session session = entityManager.unwrap(Session.class);
-        List<Long> ids = session.createQuery("select id from books").list();
+        List<Long> ids = session.createQuery("select b.id from Book b").list();
         List<Book> books = new ArrayList<>();
         for (long id : ids) {
             Book book = session.get(Book.class, id);
